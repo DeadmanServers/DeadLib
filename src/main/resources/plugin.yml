@@ -4,6 +4,8 @@ version: '${version}'
 main: dead.voidrunnerCore.VoidrunnerCore
 api-version: '1.21.11'
 load: POSTWORLD
+
+softdepend: ["PlaceholderAPI"]
 commands:
   vrcore:
     permission: op
