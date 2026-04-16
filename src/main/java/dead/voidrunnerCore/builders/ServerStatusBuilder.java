@@ -1,18 +1,16 @@
 package dead.voidrunnerCore.builders;
 
-import java.security.Timestamp;
-
 public class ServerStatusBuilder {
 
     boolean isOnline = false;
-    Timestamp timestamp;
+    long cachedAt;
 
     public ServerStatusBuilder isOnline(boolean isOnline) {
         this.isOnline = isOnline;
         return this;
     }
-    public ServerStatusBuilder timestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public ServerStatusBuilder setTime() {
+        this.cachedAt = System.currentTimeMillis();
         return this;
     }
 
@@ -20,8 +18,8 @@ public class ServerStatusBuilder {
         return isOnline;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public long getCachedAt() {
+        return cachedAt;
     }
 
 

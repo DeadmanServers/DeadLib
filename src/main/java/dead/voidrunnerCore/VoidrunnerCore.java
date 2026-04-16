@@ -12,7 +12,14 @@ public final class VoidrunnerCore extends JavaPlugin {
         INSTANCE = this;
         saveDefaultConfig();
 
+        for (String servers : getConfig().getConfigurationSection("servers").getKeys(false)) {
+            String address = servers.split(":")[0];
+            String port = servers.split(":")[1];
+        }
+
         getCommand("vrcore").setExecutor(new VoidrunnerCoreCommand());
+
+
 
 
     }
