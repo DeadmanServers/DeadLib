@@ -59,7 +59,6 @@
             <id>placeholderapi</id>
             <url>https://repo.helpch.at/releases/</url>
         </repository>
-
     </repositories>
 
     <dependencies>

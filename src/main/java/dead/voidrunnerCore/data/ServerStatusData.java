@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerStatusData {
 
-    private final ConcurrentHashMap<String, ServerStatusBuilder> serverStatusMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, ServerStatusBuilder> serverStatusMap = new ConcurrentHashMap<>();
     private static final long TTL = 15_000L;
 
     private static HashMap<String, InetSocketAddress> addresses = new HashMap<>();
@@ -19,24 +19,27 @@ public class ServerStatusData {
         return addresses;
     }
     public static void setAddresses(HashMap<String, InetSocketAddress> addresses) {
-        addresses = addresses;
+        ServerStatusData.addresses = addresses;
     }
     public static void addAddresses(String serverName, InetSocketAddress address) {
         addresses.put(serverName, address);
     }
 
-    public ConcurrentHashMap<String, ServerStatusBuilder> getServerStatusMap() {
+    public static ConcurrentHashMap<String, ServerStatusBuilder> getServerStatusMap() {
         return serverStatusMap;
     }
-    public boolean exists(String serverName) {
+    public static boolean exists(String serverName) {
         return serverStatusMap.containsKey(serverName);
     }
 
-    public ServerStatusBuilder getServerStatusBuilder(String serverName) {
-        return serverStatusMap.get(serverName);
+    public static ServerStatusBuilder getServerStatusBuilder(String serverName) {
+        if (serverStatusMap.containsKey(serverName)) {
+            return serverStatusMap.get(serverName);
+        }
+        return null;
     }
 
-    public void addServerStatusBuilder(String serverName, ServerStatusBuilder serverStatusBuilder) {
+    public static void addServerStatusBuilder(String serverName, ServerStatusBuilder serverStatusBuilder) {
         serverStatusMap.put(serverName, serverStatusBuilder);
     }
 
