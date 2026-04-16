@@ -1,6 +1,7 @@
 package dead.voidrunnerCore.data;
 
 import dead.voidrunnerCore.builders.ServerStatusBuilder;
+import dead.voidrunnerCore.util.SLPUtil;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -10,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerStatusData {
 
-    private static final ConcurrentHashMap<String, ServerStatusBuilder> serverStatusMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, SLPUtil.StatusResult> serverStatusMap = new ConcurrentHashMap<>();
     private static final long TTL = 15_000L;
 
     private static HashMap<String, InetSocketAddress> addresses = new HashMap<>();
@@ -25,22 +26,22 @@ public class ServerStatusData {
         addresses.put(serverName, address);
     }
 
-    public static ConcurrentHashMap<String, ServerStatusBuilder> getServerStatusMap() {
+    public static ConcurrentHashMap<String, SLPUtil.StatusResult> getServerStatusMap() {
         return serverStatusMap;
     }
     public static boolean exists(String serverName) {
         return serverStatusMap.containsKey(serverName);
     }
 
-    public static ServerStatusBuilder getServerStatusBuilder(String serverName) {
+    public static SLPUtil.StatusResult getServerStatusBuilder(String serverName) {
         if (serverStatusMap.containsKey(serverName)) {
             return serverStatusMap.get(serverName);
         }
         return null;
     }
 
-    public static void addServerStatusBuilder(String serverName, ServerStatusBuilder serverStatusBuilder) {
-        serverStatusMap.put(serverName, serverStatusBuilder);
+    public static void addServerStatusBuilder(String serverName, SLPUtil.StatusResult serverStatus) {
+        serverStatusMap.put(serverName, serverStatus);
     }
 
     public static boolean ping(String host, int port) {
