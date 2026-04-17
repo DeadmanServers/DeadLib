@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.List;
 
-public class Menu extends AbsMenu {
+public class CoreMenu extends AbsMenu {
 
     @Override
     public Inventory build() {

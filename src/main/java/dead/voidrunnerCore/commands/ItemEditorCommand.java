@@ -1,20 +1,20 @@
 package dead.voidrunnerCore.commands;
 
-import dead.voidrunnerCore.menu.CoreMenu;
+import dead.voidrunnerCore.VoidrunnerCore;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class VoidrunnerCoreCommand implements CommandExecutor {
+public class ItemEditorCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
 
-        if (!(sender instanceof Player player)) return true;
-
-        CoreMenu menu = new CoreMenu();
-        menu.open(player);
+        if (!(sender instanceof Player player)) {
+            VoidrunnerCore.INSTANCE.getLogger().warning("How do you expect to see the inventory?");
+            return true;
+        }
 
         return false;
     }

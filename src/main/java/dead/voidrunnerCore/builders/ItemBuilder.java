@@ -3,6 +3,7 @@ package dead.voidrunnerCore.builders;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -70,6 +71,14 @@ public class ItemBuilder {
         ItemMeta meta = item.getItemMeta();
         meta.displayName(displayName);
         meta.lore(lore);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public static ItemStack glass() {
+        ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta meta = item.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         item.setItemMeta(meta);
         return item;
     }

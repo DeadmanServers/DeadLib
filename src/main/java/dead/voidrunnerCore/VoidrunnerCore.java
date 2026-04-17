@@ -1,5 +1,6 @@
 package dead.voidrunnerCore;
 
+import dead.voidrunnerCore.commands.ItemEditorCommand;
 import dead.voidrunnerCore.commands.VoidrunnerCoreCommand;
 import dead.voidrunnerCore.data.ItemData;
 import dead.voidrunnerCore.data.ServerStatusData;
@@ -51,6 +52,7 @@ public final class VoidrunnerCore extends JavaPlugin {
 
         ItemData.init(this);
         getCommand("vrcore").setExecutor(new VoidrunnerCoreCommand());
+        getCommand("itemeditor").setExecutor(new ItemEditorCommand());
 
 
 

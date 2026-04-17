@@ -70,6 +70,8 @@ public class ItemData {
     }
     public static void removeCategory(String category) {
         itemsMap.remove(category);
+        dataFile.remove("Categories." + category);
+        dataFile.save();
     }
     public static void removeItem(String itemStringID) {
         UUID itemID;
@@ -88,10 +90,11 @@ public class ItemData {
         }
         dataFile.save();
     }
-    public static void saveItem(String category, ItemStack item) {
+    public static UUID saveItem(String category, ItemStack item) {
         UUID itemID = UUID.randomUUID();
         itemsMap.computeIfAbsent(category, k -> new HashMap<>()).put(itemID, item);
-        dataFile.setSerializedItem("Categories." + category + ".", item);
+        dataFile.setSerializedItem("Categories." + category + "." + itemID, item);
         dataFile.save();
+        return itemID;
     }
 }
