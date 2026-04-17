@@ -1,6 +1,5 @@
 package dead.voidrunnerCore.placeholderAPI;
 
-import dead.voidrunnerCore.builders.ServerStatusBuilder;
 import dead.voidrunnerCore.data.ServerStatusData;
 import dead.voidrunnerCore.util.SLPUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -38,21 +37,24 @@ public class PlaceholderManager extends PlaceholderExpansion {
             case "status" -> {
                 String serverName = split[1];
                 SLPUtil.StatusResult serverStatus = ServerStatusData.getServerStatusBuilder(serverName);
+                if (serverStatus == null) {
+                    return "Failed";
+                }
                 boolean online = serverStatus.isOnline();
                 if (online) {
-                    return "&aOnline";
+                    return "Online";
                 }
-                return "&cOffline";
+                return "Offline";
             }
             case "players" -> {
                 String serverName = split[1];
                 SLPUtil.StatusResult serverStatus = ServerStatusData.getServerStatusBuilder(serverName);
                 if (serverStatus == null) {
-                    return "&cFailed";
+                    return "Failed";
                 }
                 return Math.max(serverStatus.getOnlinePlayers(), 0) + "";
             }
         }
-        return "&aLoading...";
+        return "Loading...";
     }
 }

@@ -1,11 +1,8 @@
 package dead.voidrunnerCore.data;
 
-import dead.voidrunnerCore.builders.ServerStatusBuilder;
 import dead.voidrunnerCore.util.SLPUtil;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,15 +39,6 @@ public class ServerStatusData {
 
     public static void addServerStatusBuilder(String serverName, SLPUtil.StatusResult serverStatus) {
         serverStatusMap.put(serverName, serverStatus);
-    }
-
-    public static boolean ping(String host, int port) {
-        try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress(host, port), 2000);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
     }
 
 }

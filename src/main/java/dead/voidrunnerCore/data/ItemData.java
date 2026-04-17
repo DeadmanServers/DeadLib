@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class ItemData {
 
-    private static Map<UUID, ItemData> items = new HashMap<>();
+    private static Map<String, Map<UUID, ItemData>> itemsMap = new HashMap<>();
 
     public static final File file = new File(VoidrunnerCore.INSTANCE.getDataFolder(), "itemData.yml");
 
@@ -30,11 +30,15 @@ public class ItemData {
         return itemData;
     }
 
-    public static ItemData get(UUID itemID) {
-        if (items.containsKey(itemID)) {
-            return items.get(itemID);
+    public static Map<UUID, ItemData> getFromCategory(String categoryName, boolean create) {
+        if (!itemsMap.containsKey(categoryName)) {
+            if (create) {
+                itemsMap.put(categoryName, new HashMap<>());
+                return itemsMap.get(categoryName);
+            }
+            return null;
         }
-        return null;
+        return itemsMap.get(categoryName);
     }
 
     public ItemData set(ItemStack itemStack) {
@@ -42,8 +46,8 @@ public class ItemData {
         return this;
     }
 
-    public static Map<UUID, ItemData> getItems() {
-        return items;
+    public static Map<String, Map<UUID, ItemData>> getItemsMap() {
+        return itemsMap;
     }
 
     public ItemStack getItem(ItemData itemData) {

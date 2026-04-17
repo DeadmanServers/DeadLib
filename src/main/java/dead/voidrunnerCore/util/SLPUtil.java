@@ -1,6 +1,5 @@
 package dead.voidrunnerCore.util;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -91,9 +90,11 @@ public class SLPUtil {
         public int getOnlinePlayers() {
             return onlinePlayers;
         }
+
         public int getMaxPlayers() {
             return maxPlayers;
         }
+
         public boolean isOnline() {
             return online;
         }

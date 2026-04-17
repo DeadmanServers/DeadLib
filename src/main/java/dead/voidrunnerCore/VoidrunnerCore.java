@@ -1,12 +1,10 @@
 package dead.voidrunnerCore;
 
-import dead.voidrunnerCore.builders.ServerStatusBuilder;
 import dead.voidrunnerCore.commands.VoidrunnerCoreCommand;
 import dead.voidrunnerCore.data.ServerStatusData;
 import dead.voidrunnerCore.placeholderAPI.PlaceholderManager;
 import dead.voidrunnerCore.util.SLPUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -41,10 +39,7 @@ public final class VoidrunnerCore extends JavaPlugin {
                     String host = inetSocketAddress.getHostName();
                     int port = inetSocketAddress.getPort();
 
-                    SLPUtil.StatusResult ping = SLPUtil.ping(host, port);
-
-                    boolean result = ping.isOnline();
-                    ServerStatusData.addServerStatusBuilder(serverName, new ServerStatusBuilder().isOnline(result).setTime());
+                    ServerStatusData.addServerStatusBuilder(serverName, SLPUtil.ping(host, port));
                 }
             }
         }.runTaskTimerAsynchronously(this, 0L, 200L);
