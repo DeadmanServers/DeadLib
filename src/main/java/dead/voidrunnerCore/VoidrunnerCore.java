@@ -1,6 +1,7 @@
 package dead.voidrunnerCore;
 
 import dead.voidrunnerCore.commands.VoidrunnerCoreCommand;
+import dead.voidrunnerCore.data.ItemData;
 import dead.voidrunnerCore.data.ServerStatusData;
 import dead.voidrunnerCore.placeholderAPI.PlaceholderManager;
 import dead.voidrunnerCore.util.SLPUtil;
@@ -48,6 +49,7 @@ public final class VoidrunnerCore extends JavaPlugin {
             new PlaceholderManager().register();
         }
 
+        ItemData.init(this);
         getCommand("vrcore").setExecutor(new VoidrunnerCoreCommand());
 
 
@@ -57,6 +59,6 @@ public final class VoidrunnerCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        ItemData.save();
     }
 }

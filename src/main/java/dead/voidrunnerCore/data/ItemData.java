@@ -41,36 +41,37 @@ public class ItemData {
                 dataFile.setSerializedItem("Categories." + category + "." + itemID, item);
             }
         }
+        dataFile.save();
     }
 
-    public ItemStack get(String itemStringID) {
+    public static ItemStack getItem(String itemStringID) {
         UUID itemID;
         try {
             itemID = UUID.fromString(itemStringID);
         } catch (Exception e) {
             return null;
         }
-        return get(itemID);
+        return getItem(itemID);
     }
 
-    public ItemStack get(UUID itemID) {
+    public static ItemStack getItem(UUID itemID) {
         for (String category : itemsMap.keySet()) {
             if (!itemsMap.get(category).containsKey(itemID)) continue;
-            return itemsMap.get(category).get(itemID);
+            return itemsMap.get(category).get(itemID).clone();
         }
         return null;
     }
-    public Map<UUID, ItemStack> getCategory(String category) {
+    public static Map<UUID, ItemStack> getCategory(String category) {
         return itemsMap.get(category);
     }
 
-    public Map<String, Map<UUID, ItemStack>> getCategories() {
+    public static Map<String, Map<UUID, ItemStack>> getCategories() {
         return itemsMap;
     }
-    public void remove(String category) {
+    public static void removeCategory(String category) {
         itemsMap.remove(category);
     }
-    public void removeItem(String itemStringID) {
+    public static void removeItem(String itemStringID) {
         UUID itemID;
         try {
             itemID = UUID.fromString(itemStringID);
@@ -79,10 +80,18 @@ public class ItemData {
         }
         removeItem(itemID);
     }
-    public void removeItem(UUID itemID) {
+    public static void removeItem(UUID itemID) {
         for (String category : itemsMap.keySet()) {
             if (!itemsMap.get(category).containsKey(itemID)) continue;
             itemsMap.get(category).remove(itemID);
+            dataFile.remove("Categories." + category + "." + itemID);
         }
+        dataFile.save();
+    }
+    public static void saveItem(String category, ItemStack item) {
+        UUID itemID = UUID.randomUUID();
+        itemsMap.computeIfAbsent(category, k -> new HashMap<>()).put(itemID, item);
+        dataFile.setSerializedItem("Categories." + category + ".", item);
+        dataFile.save();
     }
 }
