@@ -2,10 +2,12 @@ package dead.voidrunnerCore.data;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +27,12 @@ public class DataFile {
 
     public void set(String path, Object value) {
         config.set(path, value);
+    }
+
+    public void setSerializedItem(String path, ItemStack item) {
+        byte[] bytes = item.serializeAsBytes();
+        String encoded = Base64.getEncoder().encodeToString(bytes);
+        config.set(path, encoded);
     }
 
     public void save() {
@@ -67,5 +75,12 @@ public class DataFile {
             return Collections.emptySet();
         }
         return section.getKeys(false);
+    }
+    public ItemStack getSerializedItem(String path) {
+        String encoded = config.getString(path, null);
+        if (encoded == null) return null;
+        byte[] bytes = Base64.getDecoder().decode(encoded);
+
+        return ItemStack.deserializeBytes(bytes);
     }
 }
