@@ -49,8 +49,9 @@ public class MyMini {
             if (s.matches(".*&[0-9a-fk-orA-FK-OR].*")) {
                 Component component = LegacyComponentSerializer.legacyAmpersand().deserialize("<i:false>" + s);
                 normalized.add(component);
+            } else {
+                normalized.add(MiniMessage.miniMessage().deserialize("<i:false>" + s));
             }
-            normalized.add(MiniMessage.miniMessage().deserialize("<i:false>" + s));
         }
         return normalized;
     }

@@ -22,7 +22,6 @@ public class CoreMenu extends AbsMenu {
 
     @Override
     public void handleClick(InventoryClickEvent event) {
-        event.setCancelled(true);
 
     }
 

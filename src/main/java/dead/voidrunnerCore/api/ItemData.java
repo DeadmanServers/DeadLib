@@ -92,8 +92,9 @@ public class ItemData {
     }
     public static UUID saveItem(String category, ItemStack item) {
         UUID itemID = UUID.randomUUID();
-        itemsMap.computeIfAbsent(category, k -> new HashMap<>()).put(itemID, item);
-        dataFile.setSerializedItem("Categories." + category + "." + itemID, item);
+        ItemStack clone = item.clone();
+        itemsMap.computeIfAbsent(category, k -> new HashMap<>()).put(itemID, clone);
+        dataFile.setSerializedItem("Categories." + category + "." + itemID, clone);
         dataFile.save();
         return itemID;
     }

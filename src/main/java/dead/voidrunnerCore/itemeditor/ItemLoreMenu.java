@@ -65,7 +65,6 @@ public class ItemLoreMenu extends AbsMenu {
     @Override
     public void handleClick(InventoryClickEvent event) {
 
-        event.setCancelled(true);
         if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
@@ -143,9 +142,9 @@ public class ItemLoreMenu extends AbsMenu {
                     if (lore == null || lore.isEmpty() || lore.size() <= loreID) {
                         return;
                     }
-                    lore.add(loreID, MyMini.normalize(s));
+                    lore.set(loreID, MyMini.normalize(s));
                     Bukkit.getScheduler().runTask(VoidrunnerCore.INSTANCE, t -> {
-                        new ItemLoreMenu(clone, lore).open(player);
+                        new ItemLoreMenu(selectedItem, lore).open(player);
                     });
                 };
 

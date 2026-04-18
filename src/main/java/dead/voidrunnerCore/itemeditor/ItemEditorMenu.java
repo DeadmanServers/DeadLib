@@ -61,7 +61,7 @@ public class ItemEditorMenu extends AbsMenu {
 
     @Override
     public void handleClick(InventoryClickEvent event) {
-        event.setCancelled(true);
+
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
         if (event.getRawSlot() >= inventory.getSize()) {
@@ -80,9 +80,9 @@ public class ItemEditorMenu extends AbsMenu {
         switch (event.getRawSlot()) {
 
             case 22 -> {
-                if (selectedItem == null) return;
+                if (selectedItem == null || selectedItem.getType() == Material.AIR) return;
                 ItemStack item = event.getCurrentItem();
-                if (item == null && item.getType() == Material.AIR) return;
+                if (item == null || item.getType() == Material.AIR) return;
                 player.give(selectedItem);
                 new ItemEditorMenu().open(player);
             }
@@ -90,11 +90,7 @@ public class ItemEditorMenu extends AbsMenu {
             case 4 -> {
                 UUID playerUUID = player.getUniqueId();
                 Consumer<String> consumer = s -> {
-                    ItemStack itemEdit = selectedItem.clone();
-                    if (itemEdit == null) {
-                        ChatInputManager.cancel(playerUUID);
-                        return;
-                    }
+                    ItemStack itemEdit = selectedItem;
                     ItemMeta itemMeta = itemEdit.getItemMeta();
                     itemMeta.displayName(MyMini.normalizeComp(s));
                     itemEdit.setItemMeta(itemMeta);
