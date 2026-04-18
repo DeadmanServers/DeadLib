@@ -14,7 +14,7 @@ public class ChatInputManager {
 
     private static final Map<UUID, PendingInput> pendingMap = new ConcurrentHashMap<>();
 
-    private static final Map<UUID, ItemStack> pendingItemEditMap = new HashMap<>();
+    private static final Map<UUID, ItemStack> pendingItemEditMap = new ConcurrentHashMap<>();
 
     public static void awaitInput(UUID uuid, PendingInput pendingInput) {
         pendingMap.put(uuid, pendingInput);

@@ -1,10 +1,10 @@
 package dead.voidrunnerCore;
 
 import dead.voidrunnerCore.chat.ChatInputListener;
-import dead.voidrunnerCore.commands.ItemEditorCommand;
-import dead.voidrunnerCore.commands.VoidrunnerCoreCommand;
+import dead.voidrunnerCore.itemeditor.ItemEditorCommand;
+import dead.voidrunnerCore.menu.VoidrunnerCoreCommand;
 import dead.voidrunnerCore.api.ItemData;
-import dead.voidrunnerCore.data.ServerStatusData;
+import dead.voidrunnerCore.serverstatus.ServerStatusData;
 import dead.voidrunnerCore.menu.MenuClickListener;
 import dead.voidrunnerCore.serverstatus.PlaceholderManager;
 import dead.voidrunnerCore.serverstatus.SLPUtil;

@@ -1,6 +1,5 @@
-package dead.voidrunnerCore.commands;
+package dead.voidrunnerCore.menu;
 
-import dead.voidrunnerCore.menu.CoreMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
