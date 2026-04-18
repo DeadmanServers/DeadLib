@@ -146,4 +146,27 @@ public class LoreBuilder {
         }
         return itemStack;
     }
+    public static List<Component> getLoreComponents(ItemStack itemStack) {
+        List<Component> loreList = new ArrayList<>();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) return loreList;
+        List<Component> lore = itemMeta.lore();
+        if (lore != null && !lore.isEmpty()) {
+            loreList.addAll(lore);
+        }
+        return loreList;
+    }
+
+    public static List<String> getLoreStrings(ItemStack itemStack) {
+        List<String> loreStrings = new ArrayList<>();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) return loreStrings;
+        List<Component> lore = itemMeta.lore();
+        if (lore != null && !lore.isEmpty()) {
+            for (Component component : lore) {
+                loreStrings.add(MiniMessage.miniMessage().serialize(component));
+            }
+        }
+        return loreStrings;
+    }
 }

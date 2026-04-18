@@ -1,8 +1,10 @@
-package dead.voidrunnerCore.menu;
+package dead.voidrunnerCore.menu.declaration;
 
 import dead.voidrunnerCore.builders.ItemBuilder;
 import dead.voidrunnerCore.util.LoreBuilder;
 import dead.voidrunnerCore.util.NBT;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -24,12 +26,12 @@ public abstract class AbsMenu implements InventoryHolder {
     public static ItemStack glass = ItemBuilder.glass();
     public static ItemStack brokenData = ItemBuilder.create(Material.BARRIER, "<red><bold>BROKEN DATA").build();
     static {
-        NBT.tag(next, "menu", "next");
-        NBT.tag(back, "menu", "back");
-        NBT.tag(close, "menu", "close");
-        NBT.tag(empty, "menu", "empty");
-        NBT.tag(brokenData, "menu", "brokenData");
-        NBT.tag(glass, "menu", "glass");
+        NBT.setString(next, "menu", "next");
+        NBT.setString(back, "menu", "back");
+        NBT.setString(close, "menu", "close");
+        NBT.setString(empty, "menu", "empty");
+        NBT.setString(brokenData, "menu", "brokenData");
+        NBT.setString(glass, "menu", "glass");
     }
     public static ItemStack empty() {
         return empty.clone();
@@ -46,6 +48,27 @@ public abstract class AbsMenu implements InventoryHolder {
     public static ItemStack glass() {
         return glass.clone();
     }
+
+    public static boolean isEmptyButton(ItemStack item) {
+        return NBT.has(item, "empty");
+    }
+
+    public static boolean isBackButton(ItemStack item) {
+        return NBT.has(item, "back");
+    }
+
+    public static boolean isNextButton(ItemStack item) {
+        return NBT.has(item, "next");
+    }
+
+    public static boolean isLoreButton(ItemStack item) {
+        return NBT.has(item, "loreID");
+    }
+
+    public static boolean isGlass(ItemStack item) {
+        return NBT.has(item, "glass");
+    }
+
     public static ItemStack brokenData() {
         return brokenData.clone();
     }
@@ -53,6 +76,26 @@ public abstract class AbsMenu implements InventoryHolder {
         return LoreBuilder.create(empty())
                 .blank()
                 .line(" <dark_gray>• <green>Click to create new")
+                .buildItem();
+    }
+
+    public static ItemStack descriptionFilledButton(Component description, int index) {
+        ItemStack textButton = LoreBuilder.create(Material.PAPER).name(MiniMessage.miniMessage().serialize(description))
+                .blank()
+                .line("<gray>Left-Click: <green>Create new")
+                .line("<gray>Middle-Click: <green>Add blank line")
+                .line("<gray>Right-Click: <red>Remove line")
+                .buildItem();
+
+        NBT.setString(textButton, "loreID", index + "");
+        return textButton;
+    }
+
+    public static ItemStack emptyLoreButton() {
+        return LoreBuilder.create(empty.clone())
+                .blank()
+                .line("<gray>Left-Click: <green>Create new")
+                .line("<gray>Middle-Click: <green>Add blank line")
                 .buildItem();
     }
 

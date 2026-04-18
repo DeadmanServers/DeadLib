@@ -1,13 +1,16 @@
 package dead.voidrunnerCore;
 
+import dead.voidrunnerCore.events.ChatInputListener;
 import dead.voidrunnerCore.commands.ItemEditorCommand;
 import dead.voidrunnerCore.commands.VoidrunnerCoreCommand;
 import dead.voidrunnerCore.data.ItemData;
 import dead.voidrunnerCore.data.ServerStatusData;
+import dead.voidrunnerCore.events.MenuClickListener;
 import dead.voidrunnerCore.placeholderAPI.PlaceholderManager;
 import dead.voidrunnerCore.util.SLPUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -54,7 +57,9 @@ public final class VoidrunnerCore extends JavaPlugin {
         getCommand("vrcore").setExecutor(new VoidrunnerCoreCommand());
         getCommand("itemeditor").setExecutor(new ItemEditorCommand());
 
-
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new MenuClickListener(), this);
+        pm.registerEvents(new ChatInputListener(), this);
 
 
     }

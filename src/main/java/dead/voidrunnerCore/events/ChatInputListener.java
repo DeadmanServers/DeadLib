@@ -1,5 +1,6 @@
-package dead.voidrunnerCore.chatinputmanager;
+package dead.voidrunnerCore.events;
 
+import dead.voidrunnerCore.chatinputmanager.ChatInputManager;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -10,7 +11,6 @@ import org.bukkit.event.Listener;
 import java.util.UUID;
 
 public class ChatInputListener implements Listener {
-
 
     @EventHandler
     public void onChat(AsyncChatEvent e) {

@@ -1,9 +1,11 @@
-package dead.voidrunnerCore.menu;
+package dead.voidrunnerCore.menu.itemeditor;
 
 import dead.voidrunnerCore.VoidrunnerCore;
 import dead.voidrunnerCore.builders.ItemBuilder;
 import dead.voidrunnerCore.chatinputmanager.ChatInputManager;
 import dead.voidrunnerCore.chatinputmanager.PendingInput;
+import dead.voidrunnerCore.menu.declaration.AbsMenu;
+import dead.voidrunnerCore.util.MyMini;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -61,21 +63,31 @@ public class ItemEditorMenu extends AbsMenu {
             }
         }
 
+        if (selectedItem == null) {
+            player.sendRichMessage("<red>Select an item from your inventory");
+            return;
+        }
+
         switch (event.getRawSlot()) {
+
+            case 22 -> {
+                if (selectedItem == null) return;
+                ItemStack item = event.getCurrentItem();
+                if (item == null && item.getType() == Material.AIR) return;
+                player.give(selectedItem);
+                new ItemEditorMenu().open(player);
+            }
+
             case 4 -> {
-                if (selectedItem == null) {
-                    player.sendRichMessage("<red>Select an item from your inventory");
-                    return;
-                }
                 UUID playerUUID = player.getUniqueId();
                 Consumer<String> consumer = s -> {
-                    ItemStack itemEdit = ChatInputManager.getItemEdit(playerUUID);
+                    ItemStack itemEdit = selectedItem.clone();
                     if (itemEdit == null) {
                         ChatInputManager.cancel(playerUUID);
                         return;
                     }
                     ItemMeta itemMeta = itemEdit.getItemMeta();
-                    itemMeta.displayName(MiniMessage.miniMessage().deserialize(s));
+                    itemMeta.displayName(MiniMessage.miniMessage().deserialize("<i:false>" + s));
                     itemEdit.setItemMeta(itemMeta);
                     player.sendRichMessage("<green><b>SUCCESS!</b> <white>You have set a new name for the item.");
                     Bukkit.getScheduler().runTask(VoidrunnerCore.INSTANCE, () -> {
@@ -86,7 +98,15 @@ public class ItemEditorMenu extends AbsMenu {
                 PendingInput input = new PendingInput(consumer, "<red>You have cancelled setting a new name");
                 ChatInputManager.awaitInput(playerUUID, input);
                 ChatInputManager.awaitItemEdit(playerUUID, selectedItem);
+                player.closeInventory();
+                player.sendRichMessage("");
+                player.sendRichMessage("<green>Changing name: <white>Type a new name for this item " + MyMini.sprite(selectedItem.getType()));
+            }
+            case 15 -> {
+                if (selectedItem == null) return;
+                new ItemLoreMenu(selectedItem).open(player);
             }
         }
+
     }
 }
