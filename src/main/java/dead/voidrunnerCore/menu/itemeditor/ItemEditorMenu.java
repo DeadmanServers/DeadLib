@@ -58,7 +58,7 @@ public class ItemEditorMenu extends AbsMenu {
         if (event.getRawSlot() >= inventory.getSize()) {
             ItemStack item = event.getCurrentItem();
             if (item != null && item.getType() != Material.AIR) {
-                new ItemEditorMenu(item).open(player);
+                new ItemEditorMenu(item.asOne()).open(player);
                 return;
             }
         }
@@ -87,7 +87,7 @@ public class ItemEditorMenu extends AbsMenu {
                         return;
                     }
                     ItemMeta itemMeta = itemEdit.getItemMeta();
-                    itemMeta.displayName(MiniMessage.miniMessage().deserialize("<i:false>" + s));
+                    itemMeta.displayName(MyMini.normalizeComp(s));
                     itemEdit.setItemMeta(itemMeta);
                     player.sendRichMessage("<green><b>SUCCESS!</b> <white>You have set a new name for the item.");
                     Bukkit.getScheduler().runTask(VoidrunnerCore.INSTANCE, () -> {

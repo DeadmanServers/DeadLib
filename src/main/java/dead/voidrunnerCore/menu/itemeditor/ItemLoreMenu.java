@@ -5,6 +5,7 @@ import dead.voidrunnerCore.chatinputmanager.ChatInputManager;
 import dead.voidrunnerCore.chatinputmanager.PendingInput;
 import dead.voidrunnerCore.menu.declaration.AbsMenu;
 import dead.voidrunnerCore.util.LoreBuilder;
+import dead.voidrunnerCore.util.MyMini;
 import dead.voidrunnerCore.util.NBT;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -23,28 +25,34 @@ import java.util.function.Consumer;
 public class ItemLoreMenu extends AbsMenu {
 
     private ItemStack selectedItem;
-    private List<Component> lore;
+    private List<String> lore;
 
     public ItemLoreMenu(ItemStack itemStack) {
         this.selectedItem = itemStack.clone();
     }
+    public ItemLoreMenu(ItemStack itemStack, List<String> lore) {
+        this.selectedItem = itemStack.clone();
+        this.lore = lore;
+    }
 
     @Override
     public Inventory build() {
-        this.inventory = Bukkit.createInventory(this, 27, MiniMessage.miniMessage().deserialize("<black>Ability Description Editor"));
+        this.inventory = Bukkit.createInventory(this, 27, MiniMessage.miniMessage().deserialize("<black>Item Lore Editor"));
         inventory.setContents(glassContents(27));
         inventory.setItem(18, backButton());
 
-        this.lore = LoreBuilder.getLoreComponents(selectedItem);
+        if (lore == null) {
+            lore = (LoreBuilder.getLoreStrings(selectedItem));
+        }
 
         for (int i = 0; i < 18; i++) {
             if (lore.isEmpty() || lore.size() <= i) {
                 inventory.setItem(i, emptyLoreButton());
                 continue;
             }
-            Component component = lore.get(i);
-            if (component != null) {
-                ItemStack icon = descriptionFilledButton(component, i);
+            String line = lore.get(i);
+            if (line != null) {
+                ItemStack icon = descriptionFilledButton(line, i);
 
                 inventory.setItem(i, icon);
             }
@@ -75,15 +83,13 @@ public class ItemLoreMenu extends AbsMenu {
         }
 
         ItemStack clone = item.clone();
-
-        VoidrunnerCore.INSTANCE.getServer().broadcast(MiniMessage.miniMessage().deserialize(isBackButton(clone) + " "));
         if (isBackButton(clone)) {
 
-            ItemMeta meta = clone.getItemMeta();
-            meta.lore(lore);
-            clone.setItemMeta(meta);
+            ItemMeta meta = selectedItem.getItemMeta();
+            meta.lore(MyMini.normalizeComp(lore));
+            selectedItem.setItemMeta(meta);
 
-            new ItemEditorMenu(clone).open(player);
+            new ItemEditorMenu(selectedItem).open(player);
             return;
         }
 
@@ -104,9 +110,10 @@ public class ItemLoreMenu extends AbsMenu {
             if (click == ClickType.LEFT) {
 
                 Consumer<String> consumer = s -> {
-                    lore.add(size, MiniMessage.miniMessage().deserialize("<i:false>" + s));
+                    lore.add(size, MyMini.normalize(s));
+                    player.sendMessage(MiniMessage.miniMessage().deserialize("<i:false>" ));
                     Bukkit.getScheduler().runTask(VoidrunnerCore.INSTANCE, () -> {
-                        open(player);
+                        new ItemLoreMenu(selectedItem, lore).open(player);
                     });
                 };
 
@@ -118,8 +125,8 @@ public class ItemLoreMenu extends AbsMenu {
                 return;
             }
             if (click == ClickType.MIDDLE) {
-                lore.add(size, Component.text(" "));
-                open(player);
+                lore.add(size," ");
+                new ItemLoreMenu(selectedItem, lore).open(player);
             }
         }
 
@@ -137,9 +144,9 @@ public class ItemLoreMenu extends AbsMenu {
                     if (lore == null || lore.isEmpty() || lore.size() <= loreID) {
                         return;
                     }
-                    lore.add(loreID, MiniMessage.miniMessage().deserialize("<i:false>" + s));
+                    lore.add(loreID, MyMini.normalize(s));
                     Bukkit.getScheduler().runTask(VoidrunnerCore.INSTANCE, t -> {
-                        open(player);
+                        new ItemLoreMenu(clone, lore).open(player);
                     });
                 };
 
@@ -152,11 +159,14 @@ public class ItemLoreMenu extends AbsMenu {
             }
             if (click == ClickType.RIGHT) {
                 lore.remove(loreID);
-                open(player);
+                if (lore == null || lore.isEmpty()) {
+                    lore = new ArrayList<>();
+                }
+                new ItemLoreMenu(selectedItem, lore).open(player);
             }
             if (click == ClickType.MIDDLE) {
-                lore.set(loreID, Component.text(" "));
-                open(player);
+                lore.set(loreID, " ");
+                new ItemLoreMenu(selectedItem, lore).open(player);
             }
         }
 

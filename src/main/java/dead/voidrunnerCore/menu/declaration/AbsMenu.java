@@ -2,6 +2,7 @@ package dead.voidrunnerCore.menu.declaration;
 
 import dead.voidrunnerCore.builders.ItemBuilder;
 import dead.voidrunnerCore.util.LoreBuilder;
+import dead.voidrunnerCore.util.MyMini;
 import dead.voidrunnerCore.util.NBT;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -26,12 +27,12 @@ public abstract class AbsMenu implements InventoryHolder {
     public static ItemStack glass = ItemBuilder.glass();
     public static ItemStack brokenData = ItemBuilder.create(Material.BARRIER, "<red><bold>BROKEN DATA").build();
     static {
-        NBT.setString(next, "menu", "next");
-        NBT.setString(back, "menu", "back");
-        NBT.setString(close, "menu", "close");
-        NBT.setString(empty, "menu", "empty");
-        NBT.setString(brokenData, "menu", "brokenData");
-        NBT.setString(glass, "menu", "glass");
+        NBT.setString(next, "next", "next");
+        NBT.setString(back, "back", "back");
+        NBT.setString(close, "close", "close");
+        NBT.setString(empty, "empty", "empty");
+        NBT.setString(brokenData, "brokenData", "brokenData");
+        NBT.setString(glass, "glass", "glass");
     }
     public static ItemStack empty() {
         return empty.clone();
@@ -79,15 +80,15 @@ public abstract class AbsMenu implements InventoryHolder {
                 .buildItem();
     }
 
-    public static ItemStack descriptionFilledButton(Component description, int index) {
-        ItemStack textButton = LoreBuilder.create(Material.PAPER).name(MiniMessage.miniMessage().serialize(description))
+    public static ItemStack descriptionFilledButton(String description, int index) {
+        ItemStack textButton = LoreBuilder.create(Material.PAPER).name(MyMini.normalize(description))
                 .blank()
                 .line("<gray>Left-Click: <green>Create new")
                 .line("<gray>Middle-Click: <green>Add blank line")
                 .line("<gray>Right-Click: <red>Remove line")
                 .buildItem();
 
-        NBT.setString(textButton, "loreID", index + "");
+        NBT.setInt(textButton, "loreID", index);
         return textButton;
     }
 
