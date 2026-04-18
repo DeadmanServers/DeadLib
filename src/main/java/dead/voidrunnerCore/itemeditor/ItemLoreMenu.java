@@ -1,4 +1,4 @@
-package dead.voidrunnerCore.menu.itemeditor;
+package dead.voidrunnerCore.itemeditor;
 
 import dead.voidrunnerCore.VoidrunnerCore;
 import dead.voidrunnerCore.chatinputmanager.ChatInputManager;
@@ -7,7 +7,6 @@ import dead.voidrunnerCore.menu.declaration.AbsMenu;
 import dead.voidrunnerCore.util.LoreBuilder;
 import dead.voidrunnerCore.util.MyMini;
 import dead.voidrunnerCore.util.NBT;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

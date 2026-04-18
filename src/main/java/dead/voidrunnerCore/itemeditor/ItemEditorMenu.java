@@ -1,4 +1,4 @@
-package dead.voidrunnerCore.menu.itemeditor;
+package dead.voidrunnerCore.itemeditor;
 
 import dead.voidrunnerCore.VoidrunnerCore;
 import dead.voidrunnerCore.builders.ItemBuilder;
