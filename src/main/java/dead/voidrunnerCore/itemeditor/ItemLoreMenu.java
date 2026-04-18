@@ -157,9 +157,6 @@ public class ItemLoreMenu extends AbsMenu {
             }
             if (click == ClickType.RIGHT) {
                 lore.remove(loreID);
-                if (lore == null || lore.isEmpty()) {
-                    lore = new ArrayList<>();
-                }
                 new ItemLoreMenu(selectedItem, lore).open(player);
             }
             if (click == ClickType.MIDDLE) {

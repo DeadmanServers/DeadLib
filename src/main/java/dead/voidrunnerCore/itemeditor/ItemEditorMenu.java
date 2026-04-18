@@ -48,7 +48,13 @@ public class ItemEditorMenu extends AbsMenu {
         inventory.setItem(11, ItemBuilder.create(Material.ITEM_FRAME, "<green>Change Material").build());
         inventory.setItem(15, ItemBuilder.create(Material.WRITABLE_BOOK, "<green>Edit Lore").build());
         inventory.setItem(29, ItemBuilder.create(Material.ENCHANTING_TABLE, "<green>Edit Enchantments").build());
-        inventory.setItem(33, ItemBuilder.create(Material.BEDROCK, "<green>Toggle Unbreakable").build());
+        ItemStack unbreakableIcon = ItemBuilder.create(Material.BEDROCK, "<green>Toggle Unbreakable", List.of("", "<white> Currently: <green><bold>ENABLED")).build();
+        if (selectedItem != null) {
+            if (!selectedItem.getItemMeta().isUnbreakable()) {
+                unbreakableIcon = ItemBuilder.create(Material.SPONGE, "<gold>Toggle Unbreakable", List.of("", "<white> Currently: <red><bold>DISABLED")).build();
+            }
+        }
+        inventory.setItem(33, unbreakableIcon);
         inventory.setItem(40, ItemBuilder.create(Material.EMERALD, "<green>Save to file").build());
         if (selectedItem == null) {
             inventory.setItem(22, ItemBuilder.create(Material.STONE_BUTTON, "<gray>Select an item from your inventory").build());
@@ -78,14 +84,6 @@ public class ItemEditorMenu extends AbsMenu {
         }
 
         switch (event.getRawSlot()) {
-
-            case 22 -> {
-                if (selectedItem == null || selectedItem.getType() == Material.AIR) return;
-                ItemStack item = event.getCurrentItem();
-                if (item == null || item.getType() == Material.AIR) return;
-                player.give(selectedItem);
-                new ItemEditorMenu().open(player);
-            }
 
             case 4 -> {
                 UUID playerUUID = player.getUniqueId();
@@ -127,6 +125,7 @@ public class ItemEditorMenu extends AbsMenu {
                         Bukkit.getScheduler().runTask(VoidrunnerCore.INSTANCE, () -> {
                             new ItemEditorMenu(newItem).open(player);
                         });
+                        return;
                     }
                     Component oldName = oldMeta.displayName();
                     List<Component> oldLore = oldMeta.lore();
@@ -141,7 +140,7 @@ public class ItemEditorMenu extends AbsMenu {
                         newMeta.lore(oldLore);
                     }
                     if (!oldPDC.isEmpty()) {
-                        // Unsure how to handle old PDC into new PDC
+                        oldPDC.copyTo(newMeta.getPersistentDataContainer(), true);
                     }
                     if (oldItemFlags != null) {
                         for (ItemFlag oldFlag : oldItemFlags) {
@@ -167,6 +166,26 @@ public class ItemEditorMenu extends AbsMenu {
             case 15 -> {
                 if (selectedItem == null) return;
                 new ItemLoreMenu(selectedItem).open(player);
+            }
+
+            case 22 -> {
+                if (selectedItem == null || selectedItem.getType() == Material.AIR) return;
+                ItemStack item = event.getCurrentItem();
+                if (item == null || item.getType() == Material.AIR) return;
+                player.give(selectedItem);
+                new ItemEditorMenu().open(player);
+            }
+
+            case 33 -> {
+                if (selectedItem == null || selectedItem.getType() == Material.AIR) return;
+                ItemMeta itemMeta = selectedItem.getItemMeta();
+                if (itemMeta.isUnbreakable()) {
+                    itemMeta.setUnbreakable(false);
+                } else {
+                    itemMeta.setUnbreakable(true);
+                }
+                selectedItem.setItemMeta(itemMeta);
+                new ItemEditorMenu(selectedItem).open(player);
             }
         }
 
