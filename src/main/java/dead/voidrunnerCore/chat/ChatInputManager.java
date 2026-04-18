@@ -1,4 +1,4 @@
-package dead.voidrunnerCore.chatinputmanager;
+package dead.voidrunnerCore.chat;
 
 import dead.voidrunnerCore.VoidrunnerCore;
 import org.bukkit.inventory.ItemStack;

@@ -1,6 +1,5 @@
-package dead.voidrunnerCore.events;
+package dead.voidrunnerCore.chat;
 
-import dead.voidrunnerCore.chatinputmanager.ChatInputManager;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;

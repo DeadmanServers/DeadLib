@@ -1,13 +1,13 @@
 package dead.voidrunnerCore;
 
-import dead.voidrunnerCore.events.ChatInputListener;
+import dead.voidrunnerCore.chat.ChatInputListener;
 import dead.voidrunnerCore.commands.ItemEditorCommand;
 import dead.voidrunnerCore.commands.VoidrunnerCoreCommand;
-import dead.voidrunnerCore.data.ItemData;
+import dead.voidrunnerCore.api.ItemData;
 import dead.voidrunnerCore.data.ServerStatusData;
-import dead.voidrunnerCore.events.MenuClickListener;
-import dead.voidrunnerCore.placeholderAPI.PlaceholderManager;
-import dead.voidrunnerCore.util.SLPUtil;
+import dead.voidrunnerCore.menu.MenuClickListener;
+import dead.voidrunnerCore.serverstatus.PlaceholderManager;
+import dead.voidrunnerCore.serverstatus.SLPUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;

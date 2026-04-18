@@ -1,4 +1,4 @@
-package dead.voidrunnerCore.chatinputmanager;
+package dead.voidrunnerCore.chat;
 
 import java.util.function.Consumer;
 

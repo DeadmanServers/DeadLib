@@ -1,4 +1,4 @@
-package dead.voidrunnerCore.data;
+package dead.voidrunnerCore.api;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;

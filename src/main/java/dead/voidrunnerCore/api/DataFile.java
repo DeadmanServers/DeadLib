@@ -1,4 +1,4 @@
-package dead.voidrunnerCore.data;
+package dead.voidrunnerCore.api;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

@@ -1,4 +1,4 @@
-package dead.voidrunnerCore.util;
+package dead.voidrunnerCore.serverstatus;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

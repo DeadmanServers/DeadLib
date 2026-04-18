@@ -1,4 +1,4 @@
-package dead.voidrunnerCore.util;
+package dead.voidrunnerCore.api;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;

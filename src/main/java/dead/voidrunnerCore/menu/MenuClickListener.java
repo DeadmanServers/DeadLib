@@ -1,6 +1,5 @@
-package dead.voidrunnerCore.events;
+package dead.voidrunnerCore.menu;
 
-import dead.voidrunnerCore.menu.declaration.AbsMenu;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

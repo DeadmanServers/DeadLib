@@ -1,6 +1,6 @@
 package dead.voidrunnerCore.data;
 
-import dead.voidrunnerCore.util.SLPUtil;
+import dead.voidrunnerCore.serverstatus.SLPUtil;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;

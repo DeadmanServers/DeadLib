@@ -1,7 +1,6 @@
 package dead.voidrunnerCore.menu;
 
-import dead.voidrunnerCore.builders.ItemBuilder;
-import dead.voidrunnerCore.menu.declaration.AbsMenu;
+import dead.voidrunnerCore.api.ItemBuilder;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

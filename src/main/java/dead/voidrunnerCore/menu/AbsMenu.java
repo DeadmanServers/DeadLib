@@ -1,11 +1,9 @@
-package dead.voidrunnerCore.menu.declaration;
+package dead.voidrunnerCore.menu;
 
-import dead.voidrunnerCore.builders.ItemBuilder;
-import dead.voidrunnerCore.util.LoreBuilder;
+import dead.voidrunnerCore.api.ItemBuilder;
+import dead.voidrunnerCore.api.LoreBuilder;
 import dead.voidrunnerCore.util.MyMini;
-import dead.voidrunnerCore.util.NBT;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import dead.voidrunnerCore.api.NBT;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

@@ -1,12 +1,12 @@
 package dead.voidrunnerCore.itemeditor;
 
 import dead.voidrunnerCore.VoidrunnerCore;
-import dead.voidrunnerCore.chatinputmanager.ChatInputManager;
-import dead.voidrunnerCore.chatinputmanager.PendingInput;
-import dead.voidrunnerCore.menu.declaration.AbsMenu;
-import dead.voidrunnerCore.util.LoreBuilder;
+import dead.voidrunnerCore.chat.ChatInputManager;
+import dead.voidrunnerCore.chat.PendingInput;
+import dead.voidrunnerCore.menu.AbsMenu;
+import dead.voidrunnerCore.api.LoreBuilder;
 import dead.voidrunnerCore.util.MyMini;
-import dead.voidrunnerCore.util.NBT;
+import dead.voidrunnerCore.api.NBT;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

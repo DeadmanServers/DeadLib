@@ -1,7 +1,6 @@
-package dead.voidrunnerCore.placeholderAPI;
+package dead.voidrunnerCore.serverstatus;
 
 import dead.voidrunnerCore.data.ServerStatusData;
-import dead.voidrunnerCore.util.SLPUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
