@@ -9,4 +9,6 @@ softdepend: ["PlaceholderAPI"]
 commands:
   vrcore:
     permission: op
+  itemeditor:
+    permission: op
 

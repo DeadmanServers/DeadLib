@@ -1,6 +1,7 @@
 package dead.voidrunnerCore.commands;
 
 import dead.voidrunnerCore.VoidrunnerCore;
+import dead.voidrunnerCore.menu.ItemEditorMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,6 +16,8 @@ public class ItemEditorCommand implements CommandExecutor {
             VoidrunnerCore.INSTANCE.getLogger().warning("How do you expect to see the inventory?");
             return true;
         }
+
+        new ItemEditorMenu().open(player);
 
         return false;
     }
