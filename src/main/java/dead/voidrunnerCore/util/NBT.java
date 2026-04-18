@@ -8,7 +8,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class NBT {
 
     private static NamespacedKey key(String key) {
-        return new NamespacedKey("voidrunnercore", key);
+        return new NamespacedKey("voidrunnercore", key.toLowerCase());
     }
 
     public static void setString(ItemStack item, String key, String value) {

@@ -76,6 +76,7 @@ public class ItemLoreMenu extends AbsMenu {
 
         ItemStack clone = item.clone();
 
+        VoidrunnerCore.INSTANCE.getServer().broadcast(MiniMessage.miniMessage().deserialize(isBackButton(clone) + " "));
         if (isBackButton(clone)) {
 
             ItemMeta meta = clone.getItemMeta();
