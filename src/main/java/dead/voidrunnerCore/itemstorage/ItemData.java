@@ -62,12 +62,26 @@ public class ItemData {
         }
         return null;
     }
+
+    public static ItemStack getItemFromCategory(String category, UUID itemID) {
+        return itemsMap.get(category).get(itemID).clone();
+    }
     public static Map<UUID, ItemStack> getCategory(String category) {
         return itemsMap.get(category);
+    }
+    public static List<UUID> getItemIDs(String category) {
+        List<UUID> itemIDs = new ArrayList<>();
+        for (UUID itemID : itemsMap.get(category).keySet()) {
+            itemIDs.add(itemID);
+        }
+        return itemIDs;
     }
 
     public static Map<String, Map<UUID, ItemStack>> getCategories() {
         return itemsMap;
+    }
+    public static List<String> getCategoryList() {
+        return new ArrayList<>(itemsMap.keySet());
     }
     public static void removeCategory(String category) {
         itemsMap.remove(category);
@@ -98,5 +112,8 @@ public class ItemData {
         dataFile.setSerializedItem("Categories." + category + "." + itemID, clone);
         dataFile.save();
         return itemID;
+    }
+    public static boolean exists(String category) {
+        return itemsMap.containsKey(category);
     }
 }

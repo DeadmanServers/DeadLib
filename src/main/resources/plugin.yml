@@ -11,4 +11,5 @@ commands:
     permission: op
   itemeditor:
     permission: op
-
+  itemstorage:
+    permission: op

@@ -2,6 +2,7 @@ package dead.voidrunnerCore;
 
 import dead.voidrunnerCore.chat.ChatInputListener;
 import dead.voidrunnerCore.itemeditor.ItemEditorCommand;
+import dead.voidrunnerCore.itemstorage.ItemStorageCommand;
 import dead.voidrunnerCore.menu.VoidrunnerCoreCommand;
 import dead.voidrunnerCore.itemstorage.ItemData;
 import dead.voidrunnerCore.protection.BlockPlaceExploits;
@@ -57,6 +58,7 @@ public final class VoidrunnerCore extends JavaPlugin {
         ItemData.init(this);
         getCommand("vrcore").setExecutor(new VoidrunnerCoreCommand());
         getCommand("itemeditor").setExecutor(new ItemEditorCommand());
+        getCommand("itemstorage").setExecutor(new ItemStorageCommand());
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new MenuClickListener(), this);
