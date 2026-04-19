@@ -36,6 +36,7 @@ public class ItemEnchantMenu extends AbsMenu {
         this.selectedItem = selectedItem;
         this.page = page;
         this.level = level;
+        this.activeOnlyFilter = activeOnlyFilter;
     }
 
     public ItemEnchantMenu(ItemStack selectedItem, int page, int level) {
@@ -75,7 +76,7 @@ public class ItemEnchantMenu extends AbsMenu {
             inventory.setItem(46, innerBackButton());
         }
         inventory.setItem(47, ItemBuilder.create(Material.REDSTONE).displayName("<yellow>-1 <gray>level").build());
-        inventory.setItem(49, ItemBuilder.create(Material.EXPERIENCE_BOTTLE).displayName("<gray>Current Level: <light_purple>" + Utilities.toRoman(level) + "<dark_gray>(" + level + ")").build());
+        inventory.setItem(49, ItemBuilder.create(Material.EXPERIENCE_BOTTLE).displayName("<gray>Current Level: <light_purple>" + Utilities.toRoman(level) + " <gray>(" + level + ")").build());
         inventory.setItem(51, ItemBuilder.create(Material.REDSTONE).displayName("<green>+1 <gray>level").build());
 
 
@@ -87,9 +88,10 @@ public class ItemEnchantMenu extends AbsMenu {
         registry.forEach(allEnchants::add);
 
         List<Enchantment> activeEnchants = new ArrayList<>();
+        ItemMeta selectedItemItemMeta = selectedItem.getItemMeta();
         if (activeOnlyFilter) {
             for (Enchantment enchantment : registry) {
-                if (selectedItem.getItemMeta().hasEnchant(enchantment)) {
+                if (selectedItemItemMeta.hasEnchant(enchantment)) {
                     activeEnchants.add(enchantment);
                 }
             }
@@ -118,10 +120,14 @@ public class ItemEnchantMenu extends AbsMenu {
             LoreBuilder lore = LoreBuilder.create(Material.ENCHANTED_BOOK)
                     .name(MiniMessage.miniMessage().serialize(enchantment.displayName(level)))
                     .blank();
-            if (selectedItem.getItemMeta().getEnchantLevel(enchantment) != level) {
+            int currentLevel = selectedItemItemMeta.getEnchantLevel(enchantment);
+            if (currentLevel > 0) {
+                lore.line("<gray>Active Level: <white>" + Utilities.toRoman(currentLevel) + " <gray>(" + currentLevel + ")").blank();
+            }
+            if (currentLevel != level) {
                 lore.line("<green>Left-Click to add");
             }
-            if (selectedItem.getItemMeta().hasEnchant(enchantment)) {
+            if (selectedItemItemMeta.hasEnchant(enchantment)) {
                 lore.line("<red>Right-Click to remove");
             }
             ItemStack enchantBook = lore.buildItem();
@@ -157,25 +163,25 @@ public class ItemEnchantMenu extends AbsMenu {
             case 46 -> {
                 page -= 1;
                 if (page < 0) page = 0;
-                ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem, page, level);
+                ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem, page, level, activeOnlyFilter);
                 menu.open(player);
                 return;
             }
             case 47 -> {
                 level -= 1;
                 if (level <= 0) level = 1;
-                ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem, page, level);
+                ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem, page, level, activeOnlyFilter);
                 menu.open(player);
                 return;
             }
             case 51 -> {
                 level += 1;
-                ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem, page, level);
+                ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem, page, level, activeOnlyFilter);
                 menu.open(player);
                 return;
             }
             case 52 -> {
-                ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem, page + 1, level);
+                ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem, page + 1, level, activeOnlyFilter);
                 menu.open(player);
                 return;
             }
@@ -193,18 +199,17 @@ public class ItemEnchantMenu extends AbsMenu {
         if (enchantment == null) {
             return;
         }
-        player.sendRichMessage(enchantment + " " + level);
 
         if (event.isLeftClick()) {
             ItemMeta meta = selectedItem.getItemMeta();
             meta.addEnchant(enchantment, level, true);
             selectedItem.setItemMeta(meta);
-            new ItemEnchantMenu(selectedItem, page, level).open(player);
+            new ItemEnchantMenu(selectedItem, page, level, activeOnlyFilter).open(player);
         } else if (event.isRightClick()) {
             ItemMeta meta = selectedItem.getItemMeta();
             meta.removeEnchant(enchantment);
             selectedItem.setItemMeta(meta);
-            new ItemEnchantMenu(selectedItem, page, level).open(player);
+            new ItemEnchantMenu(selectedItem, page, level, activeOnlyFilter).open(player);
         }
 
     }

@@ -10,6 +10,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -35,6 +36,9 @@ public abstract class AbsMenu implements InventoryHolder {
         NBT.setString(empty, "empty", "empty");
         NBT.setString(brokenData, "brokenData", "brokenData");
         NBT.setString(glass, "glass", "glass");
+        ItemMeta glassMeta  = glass.getItemMeta();
+        glassMeta.setHideTooltip(true);
+        glass.setItemMeta(glassMeta);
     }
     public static ItemStack empty() {
         return empty.clone();
