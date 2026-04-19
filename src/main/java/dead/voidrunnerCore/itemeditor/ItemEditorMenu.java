@@ -7,6 +7,7 @@ import dead.voidrunnerCore.chat.ChatInputManager;
 import dead.voidrunnerCore.chat.PendingInput;
 import dead.voidrunnerCore.menu.AbsMenu;
 import dead.voidrunnerCore.util.MyMini;
+import dead.voidrunnerCore.util.Palette;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -40,24 +41,24 @@ public class ItemEditorMenu extends AbsMenu {
 
     @Override
     public Inventory build() {
-        this.inventory = Bukkit.createInventory(this, 45, MiniMessage.miniMessage().deserialize("<black>Item Editor"));
+        this.inventory = Bukkit.createInventory(this, 45, MiniMessage.miniMessage().deserialize(Palette.GOLD + "Item Editor"));
 
         inventory.setContents(glassContents(45));
 
-        inventory.setItem(4, ItemBuilder.create(Material.OAK_SIGN, "<green>Change Name").build());
-        inventory.setItem(11, ItemBuilder.create(Material.ITEM_FRAME, "<green>Change Material").build());
-        inventory.setItem(15, ItemBuilder.create(Material.WRITABLE_BOOK, "<green>Edit Lore").build());
-        inventory.setItem(29, ItemBuilder.create(Material.ENCHANTING_TABLE, "<green>Edit Enchantments").build());
-        ItemStack unbreakableIcon = ItemBuilder.create(Material.BEDROCK, "<green>Toggle Unbreakable", List.of("", "<white> Currently: <green><bold>ENABLED")).build();
+        inventory.setItem(4, ItemBuilder.create(Material.OAK_SIGN, Palette.TEXT_PRIMARY + "Change Name").build());
+        inventory.setItem(11, ItemBuilder.create(Material.ITEM_FRAME, Palette.TEXT_PRIMARY + "Change Material").build());
+        inventory.setItem(15, ItemBuilder.create(Material.WRITABLE_BOOK, Palette.TEXT_PRIMARY + "Edit Lore").build());
+        inventory.setItem(29, ItemBuilder.create(Material.ENCHANTING_TABLE, Palette.TEXT_PRIMARY + "Edit Enchantments").build());
+        ItemStack unbreakableIcon = ItemBuilder.create(Material.BEDROCK, Palette.TEXT_PRIMARY + "Toggle Unbreakable", List.of("", Palette.TEXT_SECONDARY + "Currently:" + Palette.SUCCESS + "ENABLED")).build();
         if (selectedItem != null) {
             if (!selectedItem.getItemMeta().isUnbreakable()) {
-                unbreakableIcon = ItemBuilder.create(Material.SPONGE, "<gold>Toggle Unbreakable", List.of("", "<white> Currently: <red><bold>DISABLED")).build();
+                unbreakableIcon = ItemBuilder.create(Material.SPONGE, Palette.TEXT_PRIMARY + "Toggle Unbreakable", List.of("", Palette.TEXT_SECONDARY + "Currently:" + Palette.ERROR + "DISABLED")).build();
             }
         }
         inventory.setItem(33, unbreakableIcon);
-        inventory.setItem(40, ItemBuilder.create(Material.EMERALD, "<green>Save to file").build());
+        inventory.setItem(40, ItemBuilder.create(Material.EMERALD, Palette.SUCCESS + "Save to file").build());
         if (selectedItem == null) {
-            inventory.setItem(22, ItemBuilder.create(Material.STONE_BUTTON, "<gray>Select an item from your inventory").build());
+            inventory.setItem(22, ItemBuilder.create(Material.STONE_BUTTON, "Select an item from your inventory").build());
         } else {
             inventory.setItem(22, selectedItem);
         }
@@ -79,7 +80,7 @@ public class ItemEditorMenu extends AbsMenu {
         }
 
         if (selectedItem == null) {
-            player.sendRichMessage("<red>Select an item from your inventory");
+            player.sendRichMessage(Palette.ERROR + "Select an item from your inventory.");
             return;
         }
 
@@ -92,31 +93,31 @@ public class ItemEditorMenu extends AbsMenu {
                     ItemMeta itemMeta = itemEdit.getItemMeta();
                     itemMeta.displayName(MyMini.normalizeComp(s));
                     itemEdit.setItemMeta(itemMeta);
-                    player.sendRichMessage("<green><b>SUCCESS!</b> <white>You have set a new name for the item.");
+                    player.sendRichMessage(Palette.SUCCESS + "SUCCESS" + Palette.TEXT_PRIMARY + "You have set a new name for the item.");
                     Bukkit.getScheduler().runTask(VoidrunnerCore.INSTANCE, () -> {
                         new ItemEditorMenu(itemEdit).open(player);
                     });
                 };
 
-                PendingInput input = new PendingInput(consumer, "<red>You have cancelled setting a new name");
+                PendingInput input = new PendingInput(consumer, Palette.ERROR + "You have cancelled setting a new name");
                 ChatInputManager.awaitInput(playerUUID, input);
                 ChatInputManager.awaitItemEdit(playerUUID, selectedItem);
                 player.closeInventory();
                 player.sendRichMessage("");
-                player.sendRichMessage("<green>Changing name: <white>Type a new name for this item " + MyMini.sprite(selectedItem.getType()));
+                player.sendRichMessage(Palette.GOLD + "Changing name:" + Palette.TEXT_PRIMARY + "Type a new name" + MyMini.sprite(selectedItem.getType()));
             }
             case 11 -> {
                 UUID playerUUID = player.getUniqueId();
                 Consumer<String> consumer = s -> {
                     if (!s.equalsIgnoreCase("confirm")) {
                         ChatInputManager.cancel(playerUUID);
-                        player.sendRichMessage("<red>You have cancelled changing the item's material");
+                        player.sendRichMessage(Palette.ERROR + "You have cancelled changing the item's material");
                         return;
                     }
                     ItemStack newItem = player.getInventory().getItemInMainHand().clone();
                     if (newItem.getType() == Material.AIR) {
                         ChatInputManager.cancel(playerUUID);
-                        player.sendRichMessage("<red>You have cancelled changing the item's material");
+                        player.sendRichMessage(Palette.ERROR + "You have cancelled changing the item's material");
                         return;
                     }
                     ItemMeta oldMeta = selectedItem.getItemMeta();
@@ -156,12 +157,12 @@ public class ItemEditorMenu extends AbsMenu {
                     });
                 };
 
-                PendingInput input = new PendingInput(consumer, "<red>You have cancelled setting a new material");
+                PendingInput input = new PendingInput(consumer, Palette.ERROR + "You have cancelled setting a new material");
                 ChatInputManager.awaitInput(playerUUID, input);
                 ChatInputManager.awaitItemEdit(playerUUID, selectedItem);
                 player.closeInventory();
                 player.sendRichMessage("");
-                player.sendRichMessage("<green>Changing material: <white>Type <green>confirm <white>to select your held item, or <red>cancel <white> to go back.");
+                player.sendRichMessage(Palette.SUCCESS + "Changing material: " + Palette.TEXT_PRIMARY + "Type " + Palette.SUCCESS + "confirm " + Palette.TEXT_PRIMARY + "to select your held item, or " + Palette.ERROR + "cancel " + Palette.TEXT_PRIMARY + "to go back.");
             }
             case 15 -> {
                 if (selectedItem == null) return;

@@ -1,6 +1,7 @@
 package dead.voidrunnerCore.menu;
 
 import dead.voidrunnerCore.api.ItemBuilder;
+import dead.voidrunnerCore.util.Palette;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -15,7 +16,7 @@ public class CoreMenu extends AbsMenu {
     public Inventory build() {
         this.inventory = Bukkit.createInventory(this, 9, MiniMessage.miniMessage().deserialize("Core Menu"));
 
-        inventory.setItem(0, ItemBuilder.create(Material.CHEST, "<gold>Component List", List.of("", "<green>Click to view")).build());
+        inventory.setItem(0, ItemBuilder.create(Material.CHEST, Palette.GOLD + "Component List", List.of("", "<green>Click to view")).build());
 
         return inventory;
     }

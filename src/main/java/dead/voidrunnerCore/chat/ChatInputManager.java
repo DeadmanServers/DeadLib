@@ -1,6 +1,7 @@
 package dead.voidrunnerCore.chat;
 
 import dead.voidrunnerCore.VoidrunnerCore;
+import dead.voidrunnerCore.util.Palette;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class ChatInputManager {
     public static String getCancelMessage(UUID uuid) {
         PendingInput pendingInput = pendingMap.get(uuid);
         if (pendingInput == null) {
-            return "There is no pending input";
+            return Palette.ERROR + "There is no pending input";
         }
         return pendingInput.getCancelMessage();
     }

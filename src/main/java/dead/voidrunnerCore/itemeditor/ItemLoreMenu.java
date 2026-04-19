@@ -7,6 +7,7 @@ import dead.voidrunnerCore.menu.AbsMenu;
 import dead.voidrunnerCore.api.LoreBuilder;
 import dead.voidrunnerCore.util.MyMini;
 import dead.voidrunnerCore.api.NBT;
+import dead.voidrunnerCore.util.Palette;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,7 +37,7 @@ public class ItemLoreMenu extends AbsMenu {
 
     @Override
     public Inventory build() {
-        this.inventory = Bukkit.createInventory(this, 27, MiniMessage.miniMessage().deserialize("<black>Item Lore Editor"));
+        this.inventory = Bukkit.createInventory(this, 27, MiniMessage.miniMessage().deserialize(Palette.GOLD + "Item Lore Editor"));
         inventory.setContents(glassContents(27));
         inventory.setItem(18, backButton());
 
@@ -115,11 +116,11 @@ public class ItemLoreMenu extends AbsMenu {
                     });
                 };
 
-                PendingInput input = new PendingInput(consumer, "<red>You have cancelled adding lore.");
+                PendingInput input = new PendingInput(consumer, Palette.ERROR + "You have cancelled adding lore.");
                 ChatInputManager.awaitInput(id, input);
                 player.closeInventory();
                 player.sendRichMessage("");
-                player.sendRichMessage("<green>Adding lore: <white>Type out a line of text to add.");
+                player.sendRichMessage(Palette.SUCCESS + "Adding lore: " + Palette.TEXT_PRIMARY + "Type out a line of text to add.");
                 return;
             }
             if (click == ClickType.MIDDLE) {
@@ -148,11 +149,11 @@ public class ItemLoreMenu extends AbsMenu {
                     });
                 };
 
-                PendingInput input = new PendingInput(consumer, "<red>You have cancelled setting a lore line.");
+                PendingInput input = new PendingInput(consumer, Palette.ERROR + "You have cancelled setting a lore line.");
                 ChatInputManager.awaitInput(player.getUniqueId(), input);
                 player.closeInventory();
                 player.sendRichMessage("");
-                player.sendRichMessage("<green>Changing lore: <white>Type out a line of text.");
+                player.sendRichMessage(Palette.SUCCESS + "Changing lore " + Palette.TEXT_PRIMARY + "Type out a line of text.");
                 return;
             }
             if (click == ClickType.RIGHT) {

@@ -3,7 +3,8 @@ package dead.voidrunnerCore;
 import dead.voidrunnerCore.chat.ChatInputListener;
 import dead.voidrunnerCore.itemeditor.ItemEditorCommand;
 import dead.voidrunnerCore.menu.VoidrunnerCoreCommand;
-import dead.voidrunnerCore.api.ItemData;
+import dead.voidrunnerCore.itemstorage.ItemData;
+import dead.voidrunnerCore.protection.BlockPlaceExploits;
 import dead.voidrunnerCore.serverstatus.ServerStatusData;
 import dead.voidrunnerCore.menu.MenuClickListener;
 import dead.voidrunnerCore.serverstatus.PlaceholderManager;
@@ -60,7 +61,7 @@ public final class VoidrunnerCore extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new MenuClickListener(), this);
         pm.registerEvents(new ChatInputListener(), this);
-
+        pm.registerEvents(new BlockPlaceExploits(), this);
 
     }
 

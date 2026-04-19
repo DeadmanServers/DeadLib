@@ -5,6 +5,7 @@ import dead.voidrunnerCore.api.LoreBuilder;
 import dead.voidrunnerCore.api.NBT;
 import dead.voidrunnerCore.menu.AbsMenu;
 import dead.voidrunnerCore.util.MyMini;
+import dead.voidrunnerCore.util.Palette;
 import dead.voidrunnerCore.util.Utilities;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
@@ -60,17 +61,17 @@ public class ItemEnchantMenu extends AbsMenu {
 
     @Override
     public Inventory build() {
-        this.inventory = Bukkit.createInventory(this, 54, MyMini.normalize("<black>Enchantment Menu"));
+        this.inventory = Bukkit.createInventory(this, 54, MyMini.normalize(Palette.GOLD + "Enchantment Menu"));
 
         inventory.setContents(glassContents(54));
 
-        ItemBuilder filterbutton = ItemBuilder.create(Material.HOPPER);
+        ItemBuilder filterButton = ItemBuilder.create(Material.HOPPER);
         if (activeOnlyFilter) {
-            filterbutton.displayName("<yellow>Click to view all enchantments");
+            filterButton.displayName("<yellow>Click to view all enchantments");
         } else {
-            filterbutton.displayName("<green>Click to view active enchantments");
+            filterButton.displayName("<green>Click to view active enchantments");
         }
-        inventory.setItem(4, filterbutton.build());
+        inventory.setItem(4, filterButton.build());
         inventory.setItem(45, backButton());
         if (page > 0) {
             inventory.setItem(46, innerBackButton());
@@ -125,10 +126,10 @@ public class ItemEnchantMenu extends AbsMenu {
                 lore.line("<gray>Active Level: <white>" + Utilities.toRoman(currentLevel) + " <gray>(" + currentLevel + ")").blank();
             }
             if (currentLevel != level) {
-                lore.line("<green>Left-Click to add");
+                lore.line(Palette.SUCCESS + "Left-Click to add");
             }
             if (selectedItemItemMeta.hasEnchant(enchantment)) {
-                lore.line("<red>Right-Click to remove");
+                lore.line(Palette.ERROR + "Right-Click to remove");
             }
             ItemStack enchantBook = lore.buildItem();
             NBT.setString(enchantBook, "enchantment", key);
