@@ -175,7 +175,10 @@ public class ItemEditorMenu extends AbsMenu {
                 player.give(selectedItem);
                 new ItemEditorMenu().open(player);
             }
-
+            case 29 -> {
+                ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem);
+                menu.open(player);
+            }
             case 33 -> {
                 if (selectedItem == null || selectedItem.getType() == Material.AIR) return;
                 ItemMeta itemMeta = selectedItem.getItemMeta();

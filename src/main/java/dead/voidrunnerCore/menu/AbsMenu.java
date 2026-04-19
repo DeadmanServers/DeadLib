@@ -20,6 +20,8 @@ public abstract class AbsMenu implements InventoryHolder {
 
     public static ItemStack next = ItemBuilder.create(Material.ARROW, "<green><bold>Next").build();
     public static ItemStack back = ItemBuilder.create(Material.ARROW, "<red><bold>Back").build();
+    public static ItemStack innerBack = ItemBuilder.create(Material.ARROW, "<gray><b><<").build();
+    public static ItemStack innerNext = ItemBuilder.create(Material.ARROW, "<gray><b>>>").build();
     public static ItemStack close = ItemBuilder.create(Material.BARRIER, "<red><bold>Close").build();
     public static ItemStack empty = ItemBuilder.create(Material.STONE_BUTTON, "<grey><i:true>EMPTY").build();
     public static ItemStack glass = ItemBuilder.glass();
@@ -27,6 +29,8 @@ public abstract class AbsMenu implements InventoryHolder {
     static {
         NBT.setString(next, "next", "next");
         NBT.setString(back, "back", "back");
+        NBT.setString(innerBack, "innerBack", "innerBack");
+        NBT.setString(innerNext, "innerNext", "innerNext");
         NBT.setString(close, "close", "close");
         NBT.setString(empty, "empty", "empty");
         NBT.setString(brokenData, "brokenData", "brokenData");
@@ -37,6 +41,12 @@ public abstract class AbsMenu implements InventoryHolder {
     }
     public static ItemStack backButton() {
         return back.clone();
+    }
+    public static ItemStack innerBackButton() {
+        return innerBack.clone();
+    }
+    public static ItemStack innerNextButton() {
+        return innerNext.clone();
     }
     public static ItemStack closeButton() {
         return close.clone();
@@ -55,7 +65,12 @@ public abstract class AbsMenu implements InventoryHolder {
     public static boolean isBackButton(ItemStack item) {
         return NBT.has(item, "back");
     }
-
+    public static boolean isInnerBackButton(ItemStack item) {
+        return NBT.has(item, "innerBack");
+    }
+    public static boolean isInnerNextButton(ItemStack item) {
+        return NBT.has(item, "innerNext");
+    }
     public static boolean isNextButton(ItemStack item) {
         return NBT.has(item, "next");
     }
