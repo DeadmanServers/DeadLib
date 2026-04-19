@@ -29,7 +29,14 @@ public class ItemEnchantMenu extends AbsMenu {
     ItemStack selectedItem;
     int page;
     int level;
+    boolean activeOnlyFilter = false;
     private final Registry<Enchantment> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT);
+
+    public ItemEnchantMenu(ItemStack selectedItem, int page, int level, boolean activeOnlyFilter) {
+        this.selectedItem = selectedItem;
+        this.page = page;
+        this.level = level;
+    }
 
     public ItemEnchantMenu(ItemStack selectedItem, int page, int level) {
         this.selectedItem = selectedItem;
@@ -56,6 +63,13 @@ public class ItemEnchantMenu extends AbsMenu {
 
         inventory.setContents(glassContents(54));
 
+        ItemBuilder filterbutton = ItemBuilder.create(Material.HOPPER);
+        if (activeOnlyFilter) {
+            filterbutton.displayName("<yellow>Click to view all enchantments");
+        } else {
+            filterbutton.displayName("<green>Click to view active enchantments");
+        }
+        inventory.setItem(4, filterbutton.build());
         inventory.setItem(45, backButton());
         if (page > 0) {
             inventory.setItem(46, innerBackButton());
@@ -67,8 +81,21 @@ public class ItemEnchantMenu extends AbsMenu {
 
         int index = page * 28;
 
+
+
         List<Enchantment> allEnchants = new ArrayList<>();
         registry.forEach(allEnchants::add);
+
+        List<Enchantment> activeEnchants = new ArrayList<>();
+        if (activeOnlyFilter) {
+            for (Enchantment enchantment : registry) {
+                if (selectedItem.getItemMeta().hasEnchant(enchantment)) {
+                    activeEnchants.add(enchantment);
+                }
+            }
+            allEnchants = activeEnchants;
+        }
+
         allEnchants.sort(Comparator.comparing(e -> e.getKey().getKey()));
 
         if (index + 28 < allEnchants.size()) {
@@ -118,6 +145,10 @@ public class ItemEnchantMenu extends AbsMenu {
         }
 
         switch (event.getRawSlot()) {
+            case 4 -> {
+                new ItemEnchantMenu(selectedItem, page, level, !activeOnlyFilter).open(player);
+                return;
+            }
             case 45 -> {
                 ItemEditorMenu menu = new ItemEditorMenu(selectedItem);
                 menu.open(player);
