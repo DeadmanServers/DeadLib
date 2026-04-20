@@ -21,6 +21,7 @@ public abstract class AbsMenu implements InventoryHolder {
 
     public static ItemStack next = ItemBuilder.create(Material.ARROW, "<green><bold>Next").build();
     public static ItemStack back = ItemBuilder.create(Material.ARROW, "<red><bold>Back").build();
+    public static ItemStack save = ItemBuilder.create(Material.EMERALD, "<green><bold>Save").build();
     public static ItemStack innerBack = ItemBuilder.create(Material.ARROW, "<gray><b><<").build();
     public static ItemStack innerNext = ItemBuilder.create(Material.ARROW, "<gray><b>>>").build();
     public static ItemStack close = ItemBuilder.create(Material.BARRIER, "<red><bold>Close").build();
@@ -30,6 +31,7 @@ public abstract class AbsMenu implements InventoryHolder {
     static {
         NBT.setString(next, "next", "next");
         NBT.setString(back, "back", "back");
+        NBT.setString(save, "save", "save");
         NBT.setString(innerBack, "innerBack", "innerBack");
         NBT.setString(innerNext, "innerNext", "innerNext");
         NBT.setString(close, "close", "close");
@@ -51,6 +53,9 @@ public abstract class AbsMenu implements InventoryHolder {
     }
     public static ItemStack innerNextButton() {
         return innerNext.clone();
+    }
+    public static ItemStack saveButton() {
+        return save.clone();
     }
     public static ItemStack closeButton() {
         return close.clone();
@@ -74,6 +79,9 @@ public abstract class AbsMenu implements InventoryHolder {
     }
     public static boolean isInnerNextButton(ItemStack item) {
         return NBT.has(item, "innerNext");
+    }
+    public static boolean isSaveButton(ItemStack item) {
+        return NBT.has(item, "save");
     }
     public static boolean isNextButton(ItemStack item) {
         return NBT.has(item, "next");

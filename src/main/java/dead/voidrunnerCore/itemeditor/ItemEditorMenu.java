@@ -3,13 +3,14 @@ package dead.voidrunnerCore.itemeditor;
 import com.google.common.collect.Multimap;
 import dead.voidrunnerCore.VoidrunnerCore;
 import dead.voidrunnerCore.api.ItemBuilder;
+import dead.voidrunnerCore.api.LoreBuilder;
 import dead.voidrunnerCore.chat.ChatInputManager;
 import dead.voidrunnerCore.chat.PendingInput;
 import dead.voidrunnerCore.itemstorage.ItemData;
+import dead.voidrunnerCore.loreeditor.LoreEditorMenu;
 import dead.voidrunnerCore.menu.AbsMenu;
 import dead.voidrunnerCore.util.MyMini;
 import dead.voidrunnerCore.util.Palette;
-import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -36,6 +37,7 @@ public class ItemEditorMenu extends AbsMenu {
     public ItemEditorMenu() {
         this.selectedItem = null;
     }
+
     public ItemEditorMenu(ItemStack itemStack) {
         this.selectedItem = itemStack.clone();
     }
@@ -167,7 +169,19 @@ public class ItemEditorMenu extends AbsMenu {
             }
             case 15 -> {
                 if (selectedItem == null) return;
-                new ItemLoreMenu(selectedItem).open(player);
+                new LoreEditorMenu(
+                        "Edit Item Lore",
+                        LoreBuilder.getLoreStrings(selectedItem),
+                        updatedLore -> {
+                            ItemMeta meta = selectedItem.getItemMeta();
+                            meta.lore(MyMini.normalizeComp(updatedLore));
+                            selectedItem.setItemMeta(meta);
+                            new ItemEditorMenu(selectedItem).open(player);
+                        },
+                        () -> {
+                            new ItemEditorMenu(selectedItem).open(player);
+                        }
+                ).open(player);
             }
 
             case 22 -> {
