@@ -5,6 +5,7 @@ import dead.voidrunnerCore.VoidrunnerCore;
 import dead.voidrunnerCore.api.ItemBuilder;
 import dead.voidrunnerCore.chat.ChatInputManager;
 import dead.voidrunnerCore.chat.PendingInput;
+import dead.voidrunnerCore.itemstorage.ItemData;
 import dead.voidrunnerCore.menu.AbsMenu;
 import dead.voidrunnerCore.util.MyMini;
 import dead.voidrunnerCore.util.Palette;
@@ -190,6 +191,29 @@ public class ItemEditorMenu extends AbsMenu {
                 }
                 selectedItem.setItemMeta(itemMeta);
                 new ItemEditorMenu(selectedItem).open(player);
+            }
+            case 40 -> {
+                if (selectedItem == null || selectedItem.getType() == Material.AIR) return;
+                Consumer<String> consumer = s -> {
+                    String category = s.toLowerCase();
+                    if (!ItemData.exists(category)) {
+                        player.sendRichMessage(Palette.ERROR + "That category does not exist");
+                        open(player);
+                        return;
+                    }
+                    ItemData.saveItem(category, selectedItem);
+                    player.sendRichMessage(Palette.SUCCESS + "You have saved an item to " + Palette.TEXT_SECONDARY + category);
+                    Bukkit.getScheduler().runTask(VoidrunnerCore.INSTANCE, () -> {
+                        open(player);
+                    });
+                };
+
+                PendingInput input = new PendingInput(consumer, Palette.ERROR + "You have cancelled changing the item's material");
+                ChatInputManager.awaitInput(player.getUniqueId(), input);
+                ChatInputManager.awaitItemEdit(player.getUniqueId(), selectedItem);
+                player.closeInventory();
+                player.sendRichMessage("");
+                player.sendRichMessage(Palette.TEXT_PRIMARY + "Type a category for the item to be stored into");
             }
         }
 

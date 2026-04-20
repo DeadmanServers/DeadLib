@@ -29,16 +29,17 @@ public class ItemStorageCommand implements CommandExecutor, TabCompleter {
         /itemstorage view [category]
          */
 
-        final String category = args[1].toLowerCase();
         switch (args[0]) {
             case "add" -> {
                 if (args.length != 2) {
                     player.sendRichMessage(Palette.ERROR + "Usage: " + Palette.TEXT_PRIMARY + "/itemstorage add " + Palette.GOLD + "[category]");
                     return true;
                 }
+                String category = args[1].toLowerCase();
                 ItemStack item = player.getInventory().getItemInMainHand();
                 if (item.getType().isAir()) {
                     player.sendRichMessage(Palette.ERROR + "You need to be holding an item.");
+                    return true;
                 }
                 if (!ItemData.exists(category)) {
                     player.sendRichMessage(Palette.ERROR + "There is no category with that name.");
@@ -52,13 +53,22 @@ public class ItemStorageCommand implements CommandExecutor, TabCompleter {
                     player.sendRichMessage(Palette.ERROR + "Usage: " + Palette.TEXT_PRIMARY + "/itemstorage create " + Palette.GOLD + "[name]");
                     return true;
                 }
+                String category = args[1].toLowerCase();
+                if (ItemData.exists(category)) {
+                    player.sendRichMessage(Palette.ERROR + "There is already a category with that name.");
+                    return true;
+                }
+                ItemData.createCategory(category);
+                player.sendRichMessage(Palette.SUCCESS + "Created a category with the name " + Palette.GOLD + category);
+                return true;
             }
             case "view" -> {
                 if (args.length != 2) {
                     player.sendRichMessage(Palette.ERROR + "Usage: " + Palette.TEXT_PRIMARY + "/itemstorage view " + Palette.GOLD + "[category]");
                     return true;
                 }
-                if (!ItemData.exists(args[1])) {
+                String category = args[1].toLowerCase();
+                if (!ItemData.exists(category)) {
                     player.sendRichMessage(Palette.ERROR + "There is no category with that name.");
                     return true;
                 }

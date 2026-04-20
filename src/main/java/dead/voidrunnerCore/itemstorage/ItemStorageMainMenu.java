@@ -15,6 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemStorageMainMenu extends AbsMenu {
@@ -33,7 +34,7 @@ public class ItemStorageMainMenu extends AbsMenu {
 
         int index = page * 28;
 
-        List<String> categoryList = ItemData.getCategoryList();
+        List<String> categoryList = new ArrayList<>(ItemData.getCategoryList());
 
         if (index + 28 < categoryList.size()) {
             inventory.setItem(53, nextButton());
@@ -44,10 +45,14 @@ public class ItemStorageMainMenu extends AbsMenu {
             if (slot == 17 || slot == 26 || slot == 35) {
                 slot += 2;
             }
-            if (index >= categoryList.size()) break;
+            if (index >= categoryList.size()) {
+                inventory.setItem(slot, empty());
+                continue;
+            }
             String category = categoryList.get(index);
             if (category.isEmpty()) {
                 index++;
+                inventory.setItem(slot, empty());
                 continue;
             }
             List<Component> lore = LoreBuilder.create()
@@ -59,6 +64,7 @@ public class ItemStorageMainMenu extends AbsMenu {
             NBT.setString(icon, "categoryID", category);
 
             inventory.setItem(slot, icon);
+            index++;
         }
         return inventory;
     }

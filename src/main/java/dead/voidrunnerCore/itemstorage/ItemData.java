@@ -18,7 +18,7 @@ public class ItemData {
     public static void load() {
         Set<String> categories = dataFile.getKeys("Categories");
         for (String category: categories) {
-
+            Map<UUID, ItemStack> map = new HashMap<>();
             Set<String> itemIDs = dataFile.getKeys("Categories." + category);
             for (String itemStringID : itemIDs) {
 
@@ -29,9 +29,9 @@ public class ItemData {
                     continue;
                 }
                 ItemStack item = dataFile.getSerializedItem("Categories." + category + "." + itemStringID);
-
-                itemsMap.computeIfAbsent(category, k -> new HashMap<>()).put(itemID, item);
+                map.put(itemID, item);
             }
+            itemsMap.put(category, map);
         }
     }
     public static void save() {
@@ -70,11 +70,7 @@ public class ItemData {
         return itemsMap.get(category);
     }
     public static List<UUID> getItemIDs(String category) {
-        List<UUID> itemIDs = new ArrayList<>();
-        for (UUID itemID : itemsMap.get(category).keySet()) {
-            itemIDs.add(itemID);
-        }
-        return itemIDs;
+        return new ArrayList<>(itemsMap.get(category).keySet());
     }
 
     public static Map<String, Map<UUID, ItemStack>> getCategories() {
@@ -82,6 +78,12 @@ public class ItemData {
     }
     public static List<String> getCategoryList() {
         return new ArrayList<>(itemsMap.keySet());
+    }
+    public static void createCategory(String category) {
+        HashMap<UUID, ItemStack> emptyMap = new HashMap<>();
+        itemsMap.put(category, emptyMap);
+        dataFile.set("Categories." + category, emptyMap);
+        dataFile.save();
     }
     public static void removeCategory(String category) {
         itemsMap.remove(category);
@@ -103,6 +105,11 @@ public class ItemData {
             itemsMap.get(category).remove(itemID);
             dataFile.remove("Categories." + category + "." + itemID);
         }
+        dataFile.save();
+    }
+    public static void removeFromCategory(String category, UUID itemID) {
+        itemsMap.get(category).remove(itemID);
+        dataFile.remove("Categories." + category + "." + itemID);
         dataFile.save();
     }
     public static UUID saveItem(String category, ItemStack item) {

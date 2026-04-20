@@ -3,6 +3,8 @@ package dead.voidrunnerCore.itemstorage;
 import dead.voidrunnerCore.api.LoreBuilder;
 import dead.voidrunnerCore.api.NBT;
 import dead.voidrunnerCore.menu.AbsMenu;
+import dead.voidrunnerCore.util.MyMini;
+import dead.voidrunnerCore.util.Palette;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class ItemStorageViewer extends AbsMenu {
@@ -32,14 +33,14 @@ public class ItemStorageViewer extends AbsMenu {
 
     @Override
     public Inventory build() {
-        this.inventory = Bukkit.createInventory(null, 54, "Items");
+        this.inventory = Bukkit.createInventory(this, 54, MyMini.normalizeComp(Palette.GOLD + category));
 
         inventory.setContents(glassContents(54));
 
         inventory.setItem(45, backButton());
         int index = page * 28;
 
-        List<UUID> itemIDs = ItemData.getItemIDs(category);
+        List<UUID> itemIDs = new ArrayList<>(ItemData.getItemIDs(category));
         if (index + 28 < itemIDs.size()) {
             inventory.setItem(53, nextButton());
         }
@@ -49,7 +50,7 @@ public class ItemStorageViewer extends AbsMenu {
                 slot += 2;
             }
             if (index >= itemIDs.size()) {
-                index++;
+                inventory.setItem(slot, empty());
                 continue;
             }
             UUID itemID = itemIDs.get(index);
@@ -57,18 +58,21 @@ public class ItemStorageViewer extends AbsMenu {
 
             if (item.getType() == Material.AIR) {
                 index++;
+                inventory.setItem(slot, empty());
                 continue;
             }
             ItemStack clone = LoreBuilder.create(item.clone())
                     .blank()
+                    .line(Palette.SEPARATOR + "───────────")
                     .line("<green>Left-Click to get item")
                     .line("<green>Shift-Left Click to edit")
                     .line("<yellow>Middle-Click to get ID")
                     .line("<red>Right-Click to remove").buildItem();
             NBT.setString(clone, "itemID", itemID.toString());
             inventory.setItem(slot, clone);
+            index++;
         }
-        return null;
+        return inventory;
     }
 
     @Override
@@ -76,6 +80,12 @@ public class ItemStorageViewer extends AbsMenu {
         if (!(event.getWhoClicked() instanceof Player player)) return;
         ItemStack item = event.getCurrentItem();
         if ( item == null || item.getType().isAir() || isGlass(item)) return;
+
+
+        if (event.getRawSlot() >= inventory.getSize()) {
+            ItemData.saveItem(category, item);
+            open(player);
+        }
 
         if (isBackButton(item)) {
             if (page-1 < 0) {
@@ -95,7 +105,34 @@ public class ItemStorageViewer extends AbsMenu {
         String itemID = NBT.getString(item, "itemID");
 
         ClickType click = event.getClick();
-        player.sendRichMessage("Working on handling your " + click);
+        switch (click) {
+            case LEFT -> {
+                player.getInventory().addItem(ItemData.getItemFromCategory(category, UUID.fromString(itemID)));
+
+                //todo ADD LOGGER MESSAGES HERE WITH DISCORD SUPPORT
+
+                return;
+            }
+            case RIGHT -> {
+                if (player.getInventory().firstEmpty() == -1) {
+                    player.sendRichMessage(Palette.ERROR + "You must have an item in your inventory to remove an item.");
+                    return;
+                }
+                player.getInventory().addItem(ItemData.getItemFromCategory(category, UUID.fromString(itemID)));
+                ItemData.removeFromCategory(category, UUID.fromString(itemID));
+                open(player);
+                return;
+            }
+            case MIDDLE -> {
+                player.sendRichMessage(Palette.TEXT_PRIMARY
+                        + "<hover:show_text:'" + itemID +"'>"
+                        + "<click:copy_to_clipboard:" + itemID + ">"
+                        + Palette.SEPARATOR + "[" + Palette.GOLD + "ItemStorage" + Palette.SEPARATOR + "] "
+                        + Palette.TEXT_PRIMARY + "Click here to get the ItemID for an item from "
+                        + Palette.TEXT_SECONDARY + category);
+                return;
+            }
+        }
 
     }
 }
