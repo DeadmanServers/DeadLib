@@ -86,7 +86,7 @@ public class LoreEditorMenu extends AbsMenu {
             return;
         }
 
-        int loreID = NBT.getInt(clone, "loreID", -1);
+        int loreID = nbt.getInt(clone, "loreID", -1);
 
         ClickType click = event.getClick();
 

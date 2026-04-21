@@ -1,5 +1,6 @@
 package dead.deadLib.api.menu;
 
+import dead.deadLib.DeadLib;
 import dead.deadLib.api.item.ItemBuilder;
 import dead.deadLib.api.item.LoreBuilder;
 import dead.deadLib.api.text.MyMini;
@@ -19,6 +20,8 @@ public abstract class AbsMenu implements InventoryHolder {
 
     protected Inventory inventory;
 
+    public static final NBT nbt = new NBT(DeadLib.INSTANCE);
+
     public static ItemStack next = ItemBuilder.create(Material.ARROW, "<green><bold>Next").build();
     public static ItemStack back = ItemBuilder.create(Material.ARROW, "<red><bold>Back").build();
     public static ItemStack save = ItemBuilder.create(Material.EMERALD, "<green><bold>Save").build();
@@ -29,15 +32,15 @@ public abstract class AbsMenu implements InventoryHolder {
     public static ItemStack glass = ItemBuilder.glass();
     public static ItemStack brokenData = ItemBuilder.create(Material.BARRIER, "<red><bold>BROKEN DATA").build();
     static {
-        NBT.setString(next, "next", "next");
-        NBT.setString(back, "back", "back");
-        NBT.setString(save, "save", "save");
-        NBT.setString(innerBack, "innerBack", "innerBack");
-        NBT.setString(innerNext, "innerNext", "innerNext");
-        NBT.setString(close, "close", "close");
-        NBT.setString(empty, "empty", "empty");
-        NBT.setString(brokenData, "brokenData", "brokenData");
-        NBT.setString(glass, "glass", "glass");
+        nbt.setString(next, "next", "next");
+        nbt.setString(back, "back", "back");
+        nbt.setString(save, "save", "save");
+        nbt.setString(innerBack, "innerBack", "innerBack");
+        nbt.setString(innerNext, "innerNext", "innerNext");
+        nbt.setString(close, "close", "close");
+        nbt.setString(empty, "empty", "empty");
+        nbt.setString(brokenData, "brokenData", "brokenData");
+        nbt.setString(glass, "glass", "glass");
         ItemMeta glassMeta  = glass.getItemMeta();
         glassMeta.setHideTooltip(true);
         glass.setItemMeta(glassMeta);
@@ -68,31 +71,31 @@ public abstract class AbsMenu implements InventoryHolder {
     }
 
     public static boolean isEmptyButton(ItemStack item) {
-        return NBT.has(item, "empty");
+        return nbt.has(item, "empty");
     }
 
     public static boolean isBackButton(ItemStack item) {
-        return NBT.has(item, "back");
+        return nbt.has(item, "back");
     }
     public static boolean isInnerBackButton(ItemStack item) {
-        return NBT.has(item, "innerBack");
+        return nbt.has(item, "innerBack");
     }
     public static boolean isInnerNextButton(ItemStack item) {
-        return NBT.has(item, "innerNext");
+        return nbt.has(item, "innerNext");
     }
     public static boolean isSaveButton(ItemStack item) {
-        return NBT.has(item, "save");
+        return nbt.has(item, "save");
     }
     public static boolean isNextButton(ItemStack item) {
-        return NBT.has(item, "next");
+        return nbt.has(item, "next");
     }
 
     public static boolean isLoreButton(ItemStack item) {
-        return NBT.has(item, "loreID");
+        return nbt.has(item, "loreID");
     }
 
     public static boolean isGlass(ItemStack item) {
-        return NBT.has(item, "glass");
+        return nbt.has(item, "glass");
     }
 
     public static ItemStack brokenData() {
@@ -113,7 +116,7 @@ public abstract class AbsMenu implements InventoryHolder {
                 .line("<gray>Right-Click: <red>Remove line")
                 .buildItem();
 
-        NBT.setInt(textButton, "loreID", index);
+        nbt.setInt(textButton, "loreID", index);
         return textButton;
     }
 

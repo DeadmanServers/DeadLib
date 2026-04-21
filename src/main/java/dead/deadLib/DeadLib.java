@@ -23,7 +23,6 @@ import java.util.HashMap;
 public final class DeadLib extends JavaPlugin {
 
     public static DeadLib INSTANCE;
-    private NBT nbt;
 
     @Override
     public void onEnable() {
@@ -57,8 +56,6 @@ public final class DeadLib extends JavaPlugin {
             new PlaceholderManager().register();
         }
 
-        this.nbt = new NBT(this);
-
         ItemData.init(this);
         getCommand("deadlib").setExecutor(new DeadLibCommand());
         getCommand("itemeditor").setExecutor(new ItemEditorCommand());
@@ -71,10 +68,8 @@ public final class DeadLib extends JavaPlugin {
 
     }
 
-    public NBT getNBT() { return nbt; }
-
     @Override
     public void onDisable() {
-        ItemData.save();
+        ItemData.saveSync();
     }
 }

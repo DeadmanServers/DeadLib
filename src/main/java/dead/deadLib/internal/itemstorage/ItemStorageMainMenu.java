@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemStorageMainMenu extends AbsMenu {
-    private final NBT nbt = DeadLib.INSTANCE.getNBT();
+
+    private final NBT nbt = new NBT(DeadLib.INSTANCE);
     private int page = 0;
     public void setPage(int page) {
         this.page = page;

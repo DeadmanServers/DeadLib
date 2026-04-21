@@ -132,7 +132,7 @@ public class ItemEnchantMenu extends AbsMenu {
                 lore.line(Palette.ERROR + "Right-Click to remove");
             }
             ItemStack enchantBook = lore.buildItem();
-            NBT.setString(enchantBook, "enchantment", key);
+            nbt.setString(enchantBook, "enchantment", key);
             inventory.setItem(slot, enchantBook);
             index++;
         }
@@ -189,8 +189,8 @@ public class ItemEnchantMenu extends AbsMenu {
         }
 
         NamespacedKey key = null;
-        if (NBT.has(clickedItem, "enchantment")) {
-            String string = NBT.getString(clickedItem, "enchantment");
+        if (nbt.has(clickedItem, "enchantment")) {
+            String string = nbt.getString(clickedItem, "enchantment");
             key = NamespacedKey.fromString(string);
         }
         if (key == null)

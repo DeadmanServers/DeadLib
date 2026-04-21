@@ -68,7 +68,7 @@ public class ItemStorageViewer extends AbsMenu {
                     .line("<green>Shift-Left Click to edit")
                     .line("<yellow>Middle-Click to get ID")
                     .line("<red>Right-Click to remove").buildItem();
-            NBT.setString(clone, "itemID", itemID.toString());
+            nbt.setString(clone, "itemID", itemID.toString());
             inventory.setItem(slot, clone);
             index++;
         }
@@ -101,8 +101,8 @@ public class ItemStorageViewer extends AbsMenu {
             page++;
             open(player);
         }
-        if (!NBT.has(item, "itemID")) return;
-        String itemID = NBT.getString(item, "itemID");
+        if (!nbt.has(item, "itemID")) return;
+        String itemID = nbt.getString(item, "itemID");
 
         ClickType click = event.getClick();
         switch (click) {

@@ -44,6 +44,16 @@ public class ItemData {
         }
         dataFile.save();
     }
+    public static void saveSync() {
+        for (String category : itemsMap.keySet()) {
+            for (UUID itemID : itemsMap.get(category).keySet()) {
+                ItemStack item = itemsMap.get(category).get(itemID);
+                if (item == null) continue;
+                dataFile.setItem("Categories." + category + "." + itemID.toString(), item);
+            }
+        }
+        dataFile.saveSync();
+    }
 
     public static ItemStack getItem(String itemStringID) {
         UUID itemID;

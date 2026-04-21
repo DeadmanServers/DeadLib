@@ -2,7 +2,7 @@ name: DeadLib
 version: '${version}'
 
 main: dead.deadLib.DeadLib
-api-version: '1.21.11'
+api-version: '1.21'
 load: POSTWORLD
 
 softdepend: ["PlaceholderAPI"]
