@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dead</groupId>
-    <artifactId>VoidrunnerCore</artifactId>
-    <version>0.0.1</version>
+    <artifactId>DeadLib</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>VoidrunnerCore</name>
+    <name>DeadLib</name>
 
     <properties>
         <java.version>21</java.version>

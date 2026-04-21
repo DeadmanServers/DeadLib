@@ -1,0 +1,58 @@
+package dead.deadLib.internal.serverstatus;
+
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+public class PlaceholderManager extends PlaceholderExpansion {
+    @Override
+    public @NotNull String getIdentifier() {
+        return "voidrunners";
+    }
+
+    @Override
+    public @NotNull String getAuthor() {
+        return "";
+    }
+
+    @Override
+    public @NotNull String getVersion() {
+        return "";
+    }
+
+    @Override
+    public boolean persist() {
+        return true;
+    }
+    @Override
+    public boolean canRegister() {
+        return true;
+    }
+    @Override
+    public String onPlaceholderRequest(Player player, @NotNull String params) {
+        String[] split = params.split("_", 2);
+        switch (split[0]) {
+            case "status" -> {
+                String serverName = split[1];
+                SLPUtil.StatusResult serverStatus = ServerStatusData.getServerStatusBuilder(serverName);
+                if (serverStatus == null) {
+                    return "Failed";
+                }
+                boolean online = serverStatus.isOnline();
+                if (online) {
+                    return "Online";
+                }
+                return "Offline";
+            }
+            case "players" -> {
+                String serverName = split[1];
+                SLPUtil.StatusResult serverStatus = ServerStatusData.getServerStatusBuilder(serverName);
+                if (serverStatus == null) {
+                    return "Failed";
+                }
+                return Math.max(serverStatus.getOnlinePlayers(), 0) + "";
+            }
+        }
+        return "Loading...";
+    }
+}

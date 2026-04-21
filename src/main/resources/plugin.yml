@@ -1,13 +1,13 @@
-name: VoidrunnerCore
+name: DeadLib
 version: '${version}'
 
-main: dead.voidrunnerCore.VoidrunnerCore
+main: dead.deadLib.DeadLib
 api-version: '1.21.11'
 load: POSTWORLD
 
 softdepend: ["PlaceholderAPI"]
 commands:
-  vrcore:
+  deadlib:
     permission: op
   itemeditor:
     permission: op
