@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 
 public class LoreEditorMenu extends AbsMenu {
 
+    NBT nbt = new NBT(DeadLib.INSTANCE);
     String title;
     List<String> lines;
     Consumer<List<String>> onSave;

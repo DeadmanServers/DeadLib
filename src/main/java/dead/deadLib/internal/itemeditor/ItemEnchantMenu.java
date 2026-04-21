@@ -1,5 +1,6 @@
 package dead.deadLib.internal.itemeditor;
 
+import dead.deadLib.DeadLib;
 import dead.deadLib.api.item.ItemBuilder;
 import dead.deadLib.api.item.LoreBuilder;
 import dead.deadLib.api.nbt.NBT;
@@ -27,6 +28,7 @@ import java.util.List;
 
 public class ItemEnchantMenu extends AbsMenu {
 
+    NBT nbt = new NBT(DeadLib.INSTANCE);
     ItemStack selectedItem;
     int page;
     int level;

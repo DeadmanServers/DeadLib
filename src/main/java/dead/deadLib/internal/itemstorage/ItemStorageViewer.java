@@ -1,5 +1,6 @@
 package dead.deadLib.internal.itemstorage;
 
+import dead.deadLib.DeadLib;
 import dead.deadLib.api.item.LoreBuilder;
 import dead.deadLib.api.nbt.NBT;
 import dead.deadLib.api.menu.AbsMenu;
@@ -19,6 +20,8 @@ import java.util.UUID;
 
 public class ItemStorageViewer extends AbsMenu {
 
+
+    NBT nbt = new NBT(DeadLib.INSTANCE);
     int page = 0;
     private int mainMenuPage = 0;
     private String category;

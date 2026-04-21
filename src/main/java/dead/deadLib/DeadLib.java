@@ -1,6 +1,7 @@
 package dead.deadLib;
 
 import dead.deadLib.api.chat.ChatInputListener;
+import dead.deadLib.api.menu.AbsMenu;
 import dead.deadLib.api.nbt.NBT;
 import dead.deadLib.internal.itemeditor.ItemEditorCommand;
 import dead.deadLib.internal.itemstorage.ItemStorageCommand;
@@ -28,6 +29,8 @@ public final class DeadLib extends JavaPlugin {
     public void onEnable() {
         INSTANCE = this;
         saveDefaultConfig();
+        AbsMenu.init(this);
+        ItemData.init(this);
 
         ConfigurationSection section = getConfig().getConfigurationSection("servers");
         for (String serverName : section.getKeys(false)) {
@@ -56,7 +59,6 @@ public final class DeadLib extends JavaPlugin {
             new PlaceholderManager().register();
         }
 
-        ItemData.init(this);
         getCommand("deadlib").setExecutor(new DeadLibCommand());
         getCommand("itemeditor").setExecutor(new ItemEditorCommand());
         getCommand("itemstorage").setExecutor(new ItemStorageCommand());
