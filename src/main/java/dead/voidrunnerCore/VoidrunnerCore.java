@@ -1,15 +1,17 @@
 package dead.voidrunnerCore;
 
-import dead.voidrunnerCore.chat.ChatInputListener;
-import dead.voidrunnerCore.itemeditor.ItemEditorCommand;
-import dead.voidrunnerCore.itemstorage.ItemStorageCommand;
-import dead.voidrunnerCore.menu.VoidrunnerCoreCommand;
-import dead.voidrunnerCore.itemstorage.ItemData;
-import dead.voidrunnerCore.protection.BlockPlaceExploits;
-import dead.voidrunnerCore.serverstatus.ServerStatusData;
-import dead.voidrunnerCore.menu.MenuClickListener;
-import dead.voidrunnerCore.serverstatus.PlaceholderManager;
-import dead.voidrunnerCore.serverstatus.SLPUtil;
+import dead.voidrunnerCore.api.chat.ChatInputListener;
+import dead.voidrunnerCore.api.data.DataFile;
+import dead.voidrunnerCore.api.nbt.NBT;
+import dead.voidrunnerCore.internal.itemeditor.ItemEditorCommand;
+import dead.voidrunnerCore.internal.itemstorage.ItemStorageCommand;
+import dead.voidrunnerCore.api.menu.VoidrunnerCoreCommand;
+import dead.voidrunnerCore.internal.itemstorage.ItemData;
+import dead.voidrunnerCore.internal.protection.BlockPlaceExploits;
+import dead.voidrunnerCore.internal.serverstatus.ServerStatusData;
+import dead.voidrunnerCore.api.menu.MenuClickListener;
+import dead.voidrunnerCore.internal.serverstatus.PlaceholderManager;
+import dead.voidrunnerCore.internal.serverstatus.SLPUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
@@ -22,6 +24,7 @@ import java.util.HashMap;
 public final class VoidrunnerCore extends JavaPlugin {
 
     public static VoidrunnerCore INSTANCE;
+    private NBT nbt;
 
     @Override
     public void onEnable() {
@@ -55,6 +58,8 @@ public final class VoidrunnerCore extends JavaPlugin {
             new PlaceholderManager().register();
         }
 
+        this.nbt = new NBT(this);
+
         ItemData.init(this);
         getCommand("vrcore").setExecutor(new VoidrunnerCoreCommand());
         getCommand("itemeditor").setExecutor(new ItemEditorCommand());
@@ -66,6 +71,8 @@ public final class VoidrunnerCore extends JavaPlugin {
         pm.registerEvents(new BlockPlaceExploits(), this);
 
     }
+
+    public NBT getNBT() { return nbt; }
 
     @Override
     public void onDisable() {
