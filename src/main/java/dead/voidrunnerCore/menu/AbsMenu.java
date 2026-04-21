@@ -3,7 +3,7 @@ package dead.voidrunnerCore.menu;
 import dead.voidrunnerCore.api.ItemBuilder;
 import dead.voidrunnerCore.api.LoreBuilder;
 import dead.voidrunnerCore.util.MyMini;
-import dead.voidrunnerCore.api.NBT;
+import dead.voidrunnerCore.api.nbt.NBT;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

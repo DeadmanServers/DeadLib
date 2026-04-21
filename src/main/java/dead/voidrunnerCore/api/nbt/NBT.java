@@ -1,9 +1,17 @@
-package dead.voidrunnerCore.api;
+package dead.voidrunnerCore.api.nbt;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+
+/*
+
+api/item/NBT.java         — the instance + shortcut methods
+api/item/ItemHandle.java  — inner/static class, lambda-bound item meta wrapper
+api/item/EntityHandle.java — same for PersistentDataHolders (Player/Block/etc.)
+
+ */
 
 public class NBT {
 

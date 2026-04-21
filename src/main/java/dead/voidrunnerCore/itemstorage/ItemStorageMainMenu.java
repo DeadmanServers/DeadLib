@@ -2,7 +2,7 @@ package dead.voidrunnerCore.itemstorage;
 
 import dead.voidrunnerCore.api.ItemBuilder;
 import dead.voidrunnerCore.api.LoreBuilder;
-import dead.voidrunnerCore.api.NBT;
+import dead.voidrunnerCore.api.nbt.NBT;
 import dead.voidrunnerCore.menu.AbsMenu;
 import dead.voidrunnerCore.menu.CoreMenu;
 import dead.voidrunnerCore.util.MyMini;

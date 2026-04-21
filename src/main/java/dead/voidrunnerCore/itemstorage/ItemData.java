@@ -1,6 +1,6 @@
 package dead.voidrunnerCore.itemstorage;
 
-import dead.voidrunnerCore.api.DataFile;
+import dead.voidrunnerCore.api.data.DataFile;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -28,7 +28,7 @@ public class ItemData {
                 } catch (Exception e) {
                     continue;
                 }
-                ItemStack item = dataFile.getSerializedItem("Categories." + category + "." + itemStringID);
+                ItemStack item = dataFile.getItem("Categories." + category + "." + itemStringID);
                 map.put(itemID, item);
             }
             itemsMap.put(category, map);
@@ -39,7 +39,7 @@ public class ItemData {
             for (UUID itemID : itemsMap.get(category).keySet()) {
                 ItemStack item = itemsMap.get(category).get(itemID);
                 if (item == null) continue;
-                dataFile.setSerializedItem("Categories." + category + "." + itemID, item);
+                dataFile.setItem("Categories." + category + "." + itemID, item);
             }
         }
         dataFile.save();
@@ -116,7 +116,7 @@ public class ItemData {
         UUID itemID = UUID.randomUUID();
         ItemStack clone = item.clone();
         itemsMap.computeIfAbsent(category, k -> new HashMap<>()).put(itemID, clone);
-        dataFile.setSerializedItem("Categories." + category + "." + itemID, clone);
+        dataFile.setItem("Categories." + category + "." + itemID, clone);
         dataFile.save();
         return itemID;
     }
