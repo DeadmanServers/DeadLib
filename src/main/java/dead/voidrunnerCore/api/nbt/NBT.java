@@ -1,135 +1,172 @@
 package dead.voidrunnerCore.api.nbt;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.persistence.PersistentDataHolder;
+import org.bukkit.plugin.Plugin;
 
-/*
-
-api/item/NBT.java         — the instance + shortcut methods
-api/item/ItemHandle.java  — inner/static class, lambda-bound item meta wrapper
-api/item/EntityHandle.java — same for PersistentDataHolders (Player/Block/etc.)
-
- */
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class NBT {
 
-    private static NamespacedKey key(String key) {
-        return new NamespacedKey("voidrunnercore", key.toLowerCase());
+    private final Plugin plugin;
+
+    public NBT(Plugin plugin) {
+        this.plugin = plugin;
     }
 
-    public static void setString(ItemStack item, String key, String value) {
+    public void modify(ItemStack item, Consumer<PdcHandle> mutator) {
+        if (item == null) return;
         ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.STRING, value);
-        item.setItemMeta(meta);
-    }
-    public static void setInt(ItemStack item, String key, int value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.INTEGER, value);
-        item.setItemMeta(meta);
-    }
-    public static void setBoolean(ItemStack item, String key, boolean value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.BOOLEAN, value);
-        item.setItemMeta(meta);
-    }
-    public static void setDouble(ItemStack item, String key, double value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.DOUBLE, value);
-        item.setItemMeta(meta);
-    }
-    public static void setLong(ItemStack item, String key, long value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.LONG, value);
-        item.setItemMeta(meta);
-    }
-    public static void setFloat(ItemStack item, String key, float value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.FLOAT, value);
-        item.setItemMeta(meta);
-    }
-    public static void setByte(ItemStack item, String key, byte value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.BYTE, value);
-        item.setItemMeta(meta);
-    }
-    public static void setShort(ItemStack item, String key, short value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.SHORT, value);
-        item.setItemMeta(meta);
-    }
-    public static void setByteArray(ItemStack item, String key, byte[] value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.BYTE_ARRAY, value);
-        item.setItemMeta(meta);
-    }
-    public static void setIntArray(ItemStack item, String key, int[] value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.INTEGER_ARRAY, value);
-        item.setItemMeta(meta);
-    }
-    public static void setLongArray(ItemStack item, String key, long[] value) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(key(key), PersistentDataType.LONG_ARRAY, value);
+        if (meta == null) return;
+
+        PdcHandle handle = new PdcHandle(meta.getPersistentDataContainer(), plugin);
+        mutator.accept(handle);
         item.setItemMeta(meta);
     }
 
-    public static String getString(ItemStack item, String key) {
-        if (!has(item, key)) return null;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.STRING);
-    }
-    public static int getInt(ItemStack item, String key, int def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.INTEGER);
-    }
-    public static boolean getBoolean(ItemStack item, String key, boolean def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.BOOLEAN);
-    }
-    public static double getDouble(ItemStack item, String key, double def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.DOUBLE);
-    }
-    public static long getLong(ItemStack item, String key, long def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.LONG);
-    }
-    public static float getFloat(ItemStack item, String key, float def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.FLOAT);
-    }
-    public static byte getByte(ItemStack item, String key, byte def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.BYTE);
-    }
-    public static short getShort(ItemStack item, String key, short def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.SHORT);
-    }
-    public static byte[] getByteArray(ItemStack item, String key, byte[] def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.BYTE_ARRAY);
-    }
-    public static int[] getIntArray(ItemStack item, String key, int[] def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.INTEGER_ARRAY);
-    }
-    public static long[] getLongArray(ItemStack item, String key, long[] def) {
-        if (!has(item, key)) return def;
-        return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.LONG_ARRAY);
+    public void modify(PersistentDataHolder holder, Consumer<PdcHandle> mutator) {
+        if (holder == null) return;
+        PdcHandle handle = new PdcHandle(holder.getPersistentDataContainer(), plugin);
+        mutator.accept(handle);
     }
 
-
-    public static boolean has(ItemStack item, String key) {
-        if (item == null || !item.hasItemMeta()) return false;
-        return item.getItemMeta().getPersistentDataContainer().has(key(key));
-    }
-
-    public static void remove(ItemStack item, String key) {
-        if (!has(item, key)) return;
+    public <T> T read(ItemStack item, Function<PdcHandle, T> reader) {
+        if (item == null) return null;
         ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().remove(key(key));
-        item.setItemMeta(meta);
+        if (meta == null) return null;
+
+        PdcHandle handle = new PdcHandle(meta.getPersistentDataContainer(), plugin);
+        return reader.apply(handle);
     }
+
+    public <T> T read(PersistentDataHolder holder, Function<PdcHandle, T> reader) {
+        if (holder == null) return null;
+        PdcHandle handle = new PdcHandle(holder.getPersistentDataContainer(), plugin);
+        return reader.apply(handle);
+    }
+
+
+    public void setString(ItemStack item, String key, String value) {
+        modify(item, h -> h.setString(key, value));
+    }
+
+    public void setString(PersistentDataHolder holder, String key, String value) {
+        modify(holder, h -> h.setString(key, value));
+    }
+
+
+    public String getString(ItemStack item, String key) {
+        return read(item, h -> h.getString(key, null));
+    }
+
+    public String getString(ItemStack item, String key, String def) {
+        return read(item, h -> h.getString(key, def));
+    }
+
+    public String getString(PersistentDataHolder holder, String key) {
+        return read(holder, h -> h.getString(key, null));
+    }
+
+    public String getString(PersistentDataHolder holder, String key, String def) {
+        return read(holder, h -> h.getString(key, def));
+    }
+
+
+    public void setInt(ItemStack item, String key, int value) {
+        modify(item, h -> h.setInt(key, value));
+    }
+
+    public void setInt(PersistentDataHolder holder, String key, int value) {
+        modify(holder, h -> h.setInt(key, value));
+    }
+
+
+    public int getInt(ItemStack item, String key) {
+        return read(item, h -> h.getInt(key, 0));
+    }
+
+    public int getInt(ItemStack item, String key, int def) {
+        return read(item, h -> h.getInt(key, def));
+    }
+
+    public int getInt(PersistentDataHolder holder, String key) {
+        return read(holder, h -> h.getInt(key, 0));
+    }
+
+    public int getInt(PersistentDataHolder holder, String key, int def) {
+        return read(holder, h -> h.getInt(key, def));
+    }
+
+
+    public void setLong(ItemStack item, String key, long value) {
+        modify(item, h -> h.setLong(key, value));
+    }
+
+    public void setLong(PersistentDataHolder holder, String key, long value) {
+        modify(holder, h -> h.setLong(key, value));
+    }
+
+
+    public long getLong(ItemStack item, String key) {
+        return read(item, h -> h.getLong(key, 0L));
+    }
+
+    public long getLong(ItemStack item, String key, long def) {
+        return read(item, h -> h.getLong(key, def));
+    }
+
+    public long getLong(PersistentDataHolder holder, String key) {
+        return read(holder, h -> h.getLong(key, 0L));
+    }
+
+    public long getLong(PersistentDataHolder holder, String key, long def) {
+        return read(holder, h -> h.getLong(key, def));
+    }
+
+
+    public void setBoolean(ItemStack item, String key, boolean value) {
+        modify(item, h -> h.setBoolean(key, value));
+    }
+
+    public void setBoolean(PersistentDataHolder holder, String key, boolean value) {
+        modify(holder, h -> h.setBoolean(key, value));
+    }
+
+
+    public boolean getBoolean(ItemStack item, String key) {
+        return read(item, h -> h.getBoolean(key, false));
+    }
+
+    public boolean getBoolean(ItemStack item, String key, boolean def) {
+        return read(item, h -> h.getBoolean(key, def));
+    }
+
+    public boolean getBoolean(PersistentDataHolder holder, String key) {
+        return read(holder, h -> h.getBoolean(key, false));
+    }
+
+    public boolean getBoolean(PersistentDataHolder holder, String key, boolean def) {
+        return read(holder, h -> h.getBoolean(key, def));
+    }
+
+
+    public boolean has(ItemStack item, String key) {
+        return read(item, h -> h.has(key));
+    }
+
+    public boolean has(PersistentDataHolder holder, String key) {
+        return read(holder, h -> h.has(key));
+    }
+
+
+    public void remove(ItemStack item, String key) {
+        modify(item, h -> h.remove(key));
+    }
+
+    public void remove(PersistentDataHolder holder, String key) {
+        modify(holder, h -> h.remove(key));
+    }
+
 }
