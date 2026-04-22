@@ -34,6 +34,10 @@ public class DataFile {
     }
 
     public void setItem(String path, ItemStack item) {
+        if (item == null) {
+            config.set(path, null);
+            return;
+        }
         byte[] bytes = item.serializeAsBytes();
         String encoded = Base64.getEncoder().encodeToString(bytes);
         config.set(path, encoded);
