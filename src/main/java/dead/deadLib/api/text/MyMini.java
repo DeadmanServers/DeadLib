@@ -41,9 +41,9 @@ public class MyMini {
     public static Component normalizeComp(String input) {
         input = input.replace("{bar}", "<st>                    </st>");
         if (input.matches(".*&[0-9a-fk-orA-FK-OR].*")) {
-            return LegacyComponentSerializer.legacyAmpersand().deserialize("<i:false>" + input);
+            return LegacyComponentSerializer.legacyAmpersand().deserialize(input);
         }
-        return MiniMessage.miniMessage().deserialize("<i:false>" + input);
+        return MiniMessage.miniMessage().deserialize(input);
     }
 
     public static List<Component> normalizeComp(List<String> input) {
@@ -51,10 +51,10 @@ public class MyMini {
         for (String s : input) {
             s = s.replace("{bar}", "<st>                    </st>");
             if (s.matches(".*&[0-9a-fk-orA-FK-OR].*")) {
-                Component component = LegacyComponentSerializer.legacyAmpersand().deserialize("<i:false>" + s);
+                Component component = LegacyComponentSerializer.legacyAmpersand().deserialize(s);
                 normalized.add(component);
             } else {
-                normalized.add(MiniMessage.miniMessage().deserialize("<i:false>" + s));
+                normalized.add(MiniMessage.miniMessage().deserialize(s));
             }
         }
         return normalized;
