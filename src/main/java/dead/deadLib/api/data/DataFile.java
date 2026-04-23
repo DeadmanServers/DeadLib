@@ -32,6 +32,9 @@ public class DataFile {
     public void set(String path, Object value) {
         config.set(path, value);
     }
+    public void setStringList(String path, List<String> value) {
+        config.set(path, value);
+    }
 
     public void setItem(String path, ItemStack item) {
         if (item == null) {
