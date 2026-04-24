@@ -66,7 +66,7 @@ public class MyMini {
     public static String normalize(String input) {
         if (input == null) return "";
         input = input.replace("{bar}", "<st>                    </st>");
-        return legacyToMini(input);
+        return legacyToMini("<i:false>" + input);
     }
 
     public static List<String> normalize(List<String> input) {
