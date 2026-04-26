@@ -148,6 +148,11 @@ public abstract class AbsMenu implements InventoryHolder {
         Arrays.fill(glassContents, glass);
         return glassContents;
     }
+    public static ItemStack[] fillContents(int inventorySize, Material material) {
+        ItemStack[] fillContents = new ItemStack[inventorySize];
+        Arrays.fill(fillContents, ItemStack.of(material));
+        return fillContents;
+    }
 
     public abstract Inventory build();
 
