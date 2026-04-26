@@ -5,6 +5,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -169,4 +170,10 @@ public class NBT {
         modify(holder, h -> h.remove(key));
     }
 
+    public Set<String> getKeys(PersistentDataHolder holder) {
+        return read(holder, PdcHandle::getKeys);
+    }
+    public Set<String> getKeys(ItemStack item) {
+        return read(item, PdcHandle::getKeys);
+    }
 }

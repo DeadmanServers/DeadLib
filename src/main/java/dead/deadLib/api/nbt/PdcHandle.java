@@ -5,7 +5,9 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PdcHandle {
 
@@ -164,5 +166,15 @@ public class PdcHandle {
         return pdc.get(key(key), PersistentDataType.LIST.strings());
     }
 
+    public Set<String> getKeys() {
+        String myNamespace = plugin.getName().toLowerCase();
+        Set<String> result = new HashSet<>();
+        for (NamespacedKey key : pdc.getKeys()) {
+            if (key.getNamespace().equals(myNamespace)) {
+                result.add(key.getKey());
+            }
+        }
+        return result;
+    }
 
 }
