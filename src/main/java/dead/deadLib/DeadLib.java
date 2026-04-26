@@ -68,6 +68,7 @@ public final class DeadLib extends JavaPlugin {
         pm.registerEvents(new ChatInputListener(), this);
         pm.registerEvents(new BlockPlaceExploits(), this);
 
+
     }
 
     @Override
