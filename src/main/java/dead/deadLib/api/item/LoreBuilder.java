@@ -47,6 +47,16 @@ public class LoreBuilder {
         return loreBuilder;
     }
 
+    public static LoreBuilder createOrDefault(ItemStack itemStack, Material material) {
+        LoreBuilder loreBuilder = new LoreBuilder();
+        if (itemStack != null && !itemStack.getType().isAir()) {
+            loreBuilder.item = itemStack;
+        } else {
+            loreBuilder.material = material;
+        }
+        return loreBuilder;
+    }
+
     public LoreBuilder line(String line) {
         loreList.add(MiniMessage.miniMessage().deserialize("<i:false>" + line));
         return this;
