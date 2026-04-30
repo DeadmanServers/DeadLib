@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class ItemBuilder {
     private Material material;
     private Component displayName;
     private List<Component> lore = new ArrayList<>();
+    private PotionMeta potionMeta;
 
     public static ItemBuilder create() {
         return new ItemBuilder();
@@ -63,6 +65,10 @@ public class ItemBuilder {
     }
     public ItemBuilder material(Material material) {
         this.material = material;
+        return this;
+    }
+    public ItemBuilder potionMeta(PotionMeta meta) {
+        this.potionMeta = meta;
         return this;
     }
 

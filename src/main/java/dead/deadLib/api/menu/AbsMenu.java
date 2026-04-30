@@ -1,9 +1,12 @@
 package dead.deadLib.api.menu;
 
+import dead.deadLib.DeadLib;
 import dead.deadLib.api.item.ItemBuilder;
 import dead.deadLib.api.item.LoreBuilder;
 import dead.deadLib.api.nbt.NBT;
 import dead.deadLib.api.text.MyMini;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -11,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,111 +23,88 @@ import java.util.Arrays;
 public abstract class AbsMenu implements InventoryHolder {
 
     protected Inventory inventory;
+    private static DeadLib plugin;
     private static NBT nbt;
 
-    public static ItemStack next = ItemBuilder.create(Material.ARROW, "<green><bold>Next").build();
-    public static ItemStack back = ItemBuilder.create(Material.ARROW, "<red><bold>Back").build();
-    public static ItemStack save = ItemBuilder.create(Material.EMERALD, "<green><bold>Save").build();
-    public static ItemStack innerBack = ItemBuilder.create(Material.ARROW, "<gray><b><<").build();
-    public static ItemStack innerNext = ItemBuilder.create(Material.ARROW, "<gray><b>>>").build();
-    public static ItemStack close = ItemBuilder.create(Material.BARRIER, "<red><bold>Close").build();
-    public static ItemStack empty = ItemBuilder.create(Material.STONE_BUTTON, "<grey><i:true>EMPTY").build();
-    public static ItemStack glass = ItemBuilder.glass();
-    public static ItemStack brokenData = ItemBuilder.create(Material.BARRIER, "<red><bold>BROKEN DATA").build();
+    public static void init(DeadLib plugin) {
+        nbt = plugin.getNBT();
+    }
 
-    public static void init(Plugin plugin) {
-        nbt = new NBT(plugin);
-        nbt.setString(next, "next", "next");
-        nbt.setString(back, "back", "back");
-        nbt.setString(save, "save", "save");
-        nbt.setString(innerBack, "innerBack", "innerBack");
-        nbt.setString(innerNext, "innerNext", "innerNext");
-        nbt.setString(close, "close", "close");
-        nbt.setString(empty, "empty", "empty");
-        nbt.setString(brokenData, "brokenData", "brokenData");
+    public ItemStack empty() {
+        ItemStack empty = LoreBuilder.create(Material.STONE_BUTTON)
+                .name("<gray>EMPTY").buildItem();
+        nbt.setString(empty, "menu_button", "empty");
+        return empty;
+    }
+
+    public ItemStack backButton() {
+        ItemStack back = ItemBuilder.create(Material.TIPPED_ARROW, "<red>Back").build();
+        PotionMeta meta = (PotionMeta) back.getItemMeta();
+        meta.setColor(Color.fromRGB(255, 89, 86));
+        back.setItemMeta(meta);
+        nbt.setString(back, "menu_button", "back");
+        return back;
+    }
+
+    public ItemStack saveButton() {
+        return ItemBuilder.create(Material.EMERALD, "<green>Save").build();
+    }
+
+    public ItemStack closeButton() {
+        ItemStack close = ItemBuilder.create(Material.BARRIER, "<red>Close").build();
+        nbt.setString(close, "menu_button", "close");
+        return close;
+    }
+
+    public ItemStack nextButton() {
+        ItemStack next = ItemBuilder.create(Material.TIPPED_ARROW, "<green>Next").build();
+        PotionMeta meta = (PotionMeta) next.getItemMeta();
+        meta.setColor(Color.fromRGB(91, 255, 86));
+        next.setItemMeta(meta);
+        nbt.setString(next, "menu_button", "next");
+        return next;
+    }
+
+    public ItemStack glass() {
+        ItemStack glass = ItemBuilder.glass();
+
         nbt.setString(glass, "glass", "glass");
 
         ItemMeta glassMeta = glass.getItemMeta();
         glassMeta.setHideTooltip(true);
         glass.setItemMeta(glassMeta);
+        return glass;
     }
 
-    public static ItemStack empty() {
-        return empty.clone();
+    public boolean isEmptyButton(ItemStack item) {
+        return (nbt.getString(item, "menu_button").equals("empty"));
     }
 
-    public static ItemStack backButton() {
-        return back.clone();
+    public boolean isBackButton(ItemStack item) {
+        return nbt.getString(item, "menu_button").equals("back");
     }
 
-    public static ItemStack innerBackButton() {
-        return innerBack.clone();
+    public boolean isSaveButton(ItemStack item) {
+        return nbt.getString(item, "menu_button").equals("save");
     }
 
-    public static ItemStack innerNextButton() {
-        return innerNext.clone();
+    public boolean isNextButton(ItemStack item) {
+        return nbt.getString(item, "menu_button").equals("next");
     }
 
-    public static ItemStack saveButton() {
-        return save.clone();
+    public boolean isLoreButton(ItemStack item) {
+        return nbt.getString(item, "menu_button").equals("loreID");
     }
 
-    public static ItemStack closeButton() {
-        return close.clone();
+    public boolean isGlass(ItemStack item) {
+        return nbt.getString(item, "glass").equals("glass");
     }
 
-    public static ItemStack nextButton() {
-        return next.clone();
+    public ItemStack brokenData() {
+        return ItemBuilder.create(Material.BARRIER, "<red>BROKEN DATA").build();
     }
 
-    public static ItemStack glass() {
-        return glass.clone();
-    }
-
-    public static boolean isEmptyButton(ItemStack item) {
-        return nbt.has(item, "empty");
-    }
-
-    public static boolean isBackButton(ItemStack item) {
-        return nbt.has(item, "back");
-    }
-
-    public static boolean isInnerBackButton(ItemStack item) {
-        return nbt.has(item, "innerBack");
-    }
-
-    public static boolean isInnerNextButton(ItemStack item) {
-        return nbt.has(item, "innerNext");
-    }
-
-    public static boolean isSaveButton(ItemStack item) {
-        return nbt.has(item, "save");
-    }
-
-    public static boolean isNextButton(ItemStack item) {
-        return nbt.has(item, "next");
-    }
-
-    public static boolean isLoreButton(ItemStack item) {
-        return nbt.has(item, "loreID");
-    }
-
-    public static boolean isGlass(ItemStack item) {
-        return nbt.has(item, "glass");
-    }
-
-    public static ItemStack brokenData() {
-        return brokenData.clone();
-    }
-
-    public static ItemStack freeSpaceButton() {
-        return LoreBuilder.create(empty())
-                .blank()
-                .line(" <dark_gray>• <green>Click to create new")
-                .buildItem();
-    }
-
-    public static ItemStack descriptionFilledButton(String description, int index) {
+    public ItemStack descriptionFilledButton(String description, int index) {
         ItemStack textButton = LoreBuilder.create(Material.PAPER).name(MyMini.normalize(description))
                 .blank()
                 .line("<gray>Left-Click: <green>Create new")
@@ -135,20 +116,20 @@ public abstract class AbsMenu implements InventoryHolder {
         return textButton;
     }
 
-    public static ItemStack emptyLoreButton() {
-        return LoreBuilder.create(empty.clone())
+    public ItemStack emptyLoreButton() {
+        return LoreBuilder.create(empty())
                 .blank()
                 .line("<gray>Left-Click: <green>Create new")
                 .line("<gray>Middle-Click: <green>Add blank line")
                 .buildItem();
     }
 
-    public static ItemStack[] glassContents(int inventorySize) {
+    public ItemStack[] glassContents(int inventorySize) {
         ItemStack[] glassContents = new ItemStack[inventorySize];
-        Arrays.fill(glassContents, glass);
+        Arrays.fill(glassContents, glass());
         return glassContents;
     }
-    public static ItemStack[] fillContents(int inventorySize, Material material) {
+    public ItemStack[] fillContents(int inventorySize, Material material) {
         ItemStack[] fillContents = new ItemStack[inventorySize];
         Arrays.fill(fillContents, ItemStack.of(material));
         return fillContents;
@@ -160,6 +141,12 @@ public abstract class AbsMenu implements InventoryHolder {
 
     public void open(Player player) {
         player.openInventory(build());
+    }
+
+    public void syncOpen(Player player) {
+        Bukkit.getScheduler().runTask(plugin, () ->
+                open(player)
+        );
     }
 
     @Override

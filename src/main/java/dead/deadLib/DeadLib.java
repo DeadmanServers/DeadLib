@@ -24,10 +24,12 @@ import java.util.HashMap;
 public final class DeadLib extends JavaPlugin {
 
     public static DeadLib INSTANCE;
+    public static NBT nbt;
 
     @Override
     public void onEnable() {
         INSTANCE = this;
+        nbt = new NBT(this);
         saveDefaultConfig();
         AbsMenu.init(this);
         ItemData.init(this);
@@ -69,6 +71,10 @@ public final class DeadLib extends JavaPlugin {
         pm.registerEvents(new BlockPlaceExploits(), this);
 
 
+    }
+
+    public NBT getNBT() {
+        return nbt;
     }
 
     @Override

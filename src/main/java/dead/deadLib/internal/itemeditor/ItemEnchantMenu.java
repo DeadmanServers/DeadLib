@@ -76,7 +76,7 @@ public class ItemEnchantMenu extends AbsMenu {
         inventory.setItem(4, filterButton.build());
         inventory.setItem(45, backButton());
         if (page > 0) {
-            inventory.setItem(46, innerBackButton());
+            inventory.setItem(46, backButton());
         }
         inventory.setItem(47, ItemBuilder.create(Material.REDSTONE).displayName("<yellow>-1 <gray>level").build());
         inventory.setItem(49, ItemBuilder.create(Material.EXPERIENCE_BOTTLE).displayName("<gray>Current Level: <light_purple>" + TextHelpers.toRoman(level) + " <gray>(" + level + ")").build());
@@ -104,7 +104,7 @@ public class ItemEnchantMenu extends AbsMenu {
         allEnchants.sort(Comparator.comparing(e -> e.getKey().getKey()));
 
         if (index + 28 < allEnchants.size()) {
-            inventory.setItem(52, innerNextButton());
+            inventory.setItem(52, nextButton());
         }
 
 
