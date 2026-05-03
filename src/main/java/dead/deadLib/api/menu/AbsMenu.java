@@ -68,7 +68,7 @@ public abstract class AbsMenu implements InventoryHolder {
     public ItemStack glass() {
         ItemStack glass = ItemBuilder.glass();
 
-        nbt.setString(glass, "menu_button", "glass");
+        nbt.setString(glass, "glass", "glass");
 
         ItemMeta glassMeta = glass.getItemMeta();
         glassMeta.setHideTooltip(true);
@@ -97,7 +97,7 @@ public abstract class AbsMenu implements InventoryHolder {
     }
 
     public boolean isGlass(ItemStack item) {
-        return nbt.getString(item, "menu_button").equals("glass");
+        return nbt.getString(item, "glass").equals("glass");
     }
 
     public ItemStack brokenData() {
