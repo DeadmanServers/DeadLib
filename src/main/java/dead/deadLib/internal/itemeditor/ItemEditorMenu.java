@@ -48,16 +48,25 @@ public class ItemEditorMenu extends AbsMenu {
 
         inventory.setContents(glassContents(45));
 
+
+        ItemStack unbreakableIcon = ItemBuilder.create(Material.BEDROCK, Palette.TEXT_PRIMARY + "Toggle Unbreakable", List.of("", Palette.TEXT_SECONDARY + "Currently:" + Palette.SUCCESS + "ENABLED")).build();
+        ItemStack hideItemFlagsIcon = ItemBuilder.create(Material.ENDER_EYE, Palette.TEXT_PRIMARY + "Toggle Item Flags", List.of("", Palette.TEXT_SECONDARY + "Currently:" + Palette.SUCCESS + "SHOWING")).build();
+        if (selectedItem != null) {
+            ItemMeta itemMeta = selectedItem.getItemMeta();
+            if (!itemMeta.isUnbreakable()) {
+                unbreakableIcon = ItemBuilder.create(Material.SPONGE, Palette.TEXT_PRIMARY + "Toggle Unbreakable", List.of("", Palette.TEXT_SECONDARY + "Currently:" + Palette.ERROR + "DISABLED")).build();
+            }
+            if (itemMeta.hasItemFlag(ItemFlag.HIDE_ATTRIBUTES)) {
+                hideItemFlagsIcon = ItemBuilder.create(Material.ENDER_PEARL, Palette.TEXT_PRIMARY + "Toggle Item Flags", List.of("", Palette.TEXT_SECONDARY + "Currently:" + Palette.ERROR + "HIDING")).build();
+            }
+        }
+
+
         inventory.setItem(4, ItemBuilder.create(Material.OAK_SIGN, Palette.TEXT_PRIMARY + "Change Name").build());
         inventory.setItem(11, ItemBuilder.create(Material.ITEM_FRAME, Palette.TEXT_PRIMARY + "Change Material").build());
         inventory.setItem(15, ItemBuilder.create(Material.WRITABLE_BOOK, Palette.TEXT_PRIMARY + "Edit Lore").build());
+        inventory.setItem(25, hideItemFlagsIcon);
         inventory.setItem(29, ItemBuilder.create(Material.ENCHANTING_TABLE, Palette.TEXT_PRIMARY + "Edit Enchantments").build());
-        ItemStack unbreakableIcon = ItemBuilder.create(Material.BEDROCK, Palette.TEXT_PRIMARY + "Toggle Unbreakable", List.of("", Palette.TEXT_SECONDARY + "Currently:" + Palette.SUCCESS + "ENABLED")).build();
-        if (selectedItem != null) {
-            if (!selectedItem.getItemMeta().isUnbreakable()) {
-                unbreakableIcon = ItemBuilder.create(Material.SPONGE, Palette.TEXT_PRIMARY + "Toggle Unbreakable", List.of("", Palette.TEXT_SECONDARY + "Currently:" + Palette.ERROR + "DISABLED")).build();
-            }
-        }
         inventory.setItem(33, unbreakableIcon);
         inventory.setItem(40, ItemBuilder.create(Material.EMERALD, Palette.SUCCESS + "Save to file").build());
         if (selectedItem == null) {
@@ -190,6 +199,19 @@ public class ItemEditorMenu extends AbsMenu {
                 if (item == null || item.getType() == Material.AIR) return;
                 player.give(selectedItem);
                 new ItemEditorMenu().open(player);
+            }
+            case 25 -> {
+                ItemMeta itemMeta = selectedItem.getItemMeta();
+                if (itemMeta == null) return;
+                if (itemMeta.hasItemFlag(ItemFlag.HIDE_ATTRIBUTES)) {
+                    itemMeta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                    itemMeta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+                } else {
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                    itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+                }
+                selectedItem.setItemMeta(itemMeta);
+                open(player);
             }
             case 29 -> {
                 ItemEnchantMenu menu = new ItemEnchantMenu(selectedItem);

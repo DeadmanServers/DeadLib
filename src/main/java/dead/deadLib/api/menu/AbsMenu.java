@@ -9,7 +9,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -68,7 +71,7 @@ public abstract class AbsMenu implements InventoryHolder {
     public ItemStack glass() {
         ItemStack glass = ItemBuilder.glass();
 
-        nbt.setString(glass, "glass", "glass");
+        nbt.setString(glass, "menu_button", "glass");
 
         ItemMeta glassMeta = glass.getItemMeta();
         glassMeta.setHideTooltip(true);
@@ -77,27 +80,45 @@ public abstract class AbsMenu implements InventoryHolder {
     }
 
     public boolean isEmptyButton(ItemStack item) {
-        return (nbt.getString(item, "menu_button").equals("empty"));
+        if (nbt.has(item, "menu_button")) {
+            return (nbt.getString(item, "menu_button").equals("empty"));
+        }
+        return false;
     }
 
     public boolean isBackButton(ItemStack item) {
-        return nbt.getString(item, "menu_button").equals("back");
+        if (nbt.has(item, "menu_button")) {
+            return (nbt.getString(item, "menu_button").equals("back"));
+        }
+        return false;
     }
 
     public boolean isSaveButton(ItemStack item) {
-        return nbt.getString(item, "menu_button").equals("save");
+        if (nbt.has(item, "menu_button")) {
+            return (nbt.getString(item, "menu_button").equals("save"));
+        }
+        return false;
     }
 
     public boolean isNextButton(ItemStack item) {
-        return nbt.getString(item, "menu_button").equals("next");
+        if (nbt.has(item, "menu_button")) {
+            return (nbt.getString(item, "menu_button").equals("next"));
+        }
+        return false;
     }
 
     public boolean isLoreButton(ItemStack item) {
-        return nbt.getString(item, "menu_button").equals("loreID");
+        if (nbt.has(item, "menu_button")) {
+            return (nbt.getString(item, "menu_button").equals("loreID"));
+        }
+        return false;
     }
 
     public boolean isGlass(ItemStack item) {
-        return nbt.getString(item, "glass").equals("glass");
+        if (nbt.has(item, "menu_button")) {
+            return (nbt.getString(item, "menu_button").equals("glass"));
+        }
+        return false;
     }
 
     public ItemStack brokenData() {
@@ -138,6 +159,10 @@ public abstract class AbsMenu implements InventoryHolder {
     public abstract Inventory build();
 
     public abstract void handleClick(InventoryClickEvent event);
+
+    public void handleClose(InventoryCloseEvent e) {
+
+    }
 
     public void open(Player player) {
         player.openInventory(build());
