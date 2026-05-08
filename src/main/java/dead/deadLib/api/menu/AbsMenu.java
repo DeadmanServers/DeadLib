@@ -50,7 +50,9 @@ public abstract class AbsMenu implements InventoryHolder {
     }
 
     public ItemStack saveButton() {
-        return ItemBuilder.create(Material.EMERALD, "<green>Save").build();
+        ItemStack save = ItemBuilder.create(Material.EMERALD, "<green>Save").build();
+        nbt.setString(save, "menu_button", "save");
+        return save;
     }
 
     public ItemStack closeButton() {
