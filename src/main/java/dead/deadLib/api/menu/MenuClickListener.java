@@ -18,6 +18,7 @@ public class MenuClickListener implements Listener {
     }
 
     @EventHandler
+
     public void handleClose(InventoryCloseEvent e) {
         if (!(e.getPlayer() instanceof Player player)) return;
         if (!(e.getInventory().getHolder() instanceof AbsMenu menu)) return;
