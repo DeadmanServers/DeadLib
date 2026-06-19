@@ -11,10 +11,12 @@ import dead.deadLib.internal.loreeditor.LoreEditorMenu;
 import dead.deadLib.api.menu.AbsMenu;
 import dead.deadLib.api.text.MyMini;
 import dead.deadLib.api.text.Palette;
+import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
@@ -23,6 +25,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.List;
@@ -155,10 +158,8 @@ public class ItemEditorMenu extends AbsMenu {
                     if (!oldPDC.isEmpty()) {
                         oldPDC.copyTo(newMeta.getPersistentDataContainer(), true);
                     }
-                    if (oldItemFlags != null) {
-                        for (ItemFlag oldFlag : oldItemFlags) {
-                            newMeta.addItemFlags(oldFlag);
-                        }
+                    for (ItemFlag oldFlag : oldItemFlags) {
+                        newMeta.addItemFlags(oldFlag);
                     }
                     if (oldModifiers != null) {
                         newMeta.setAttributeModifiers(oldModifiers);
@@ -203,13 +204,30 @@ public class ItemEditorMenu extends AbsMenu {
             case 25 -> {
                 ItemMeta itemMeta = selectedItem.getItemMeta();
                 if (itemMeta == null) return;
+                boolean toAdd;
                 if (itemMeta.hasItemFlag(ItemFlag.HIDE_ATTRIBUTES)) {
                     itemMeta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                     itemMeta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+                    toAdd = false;
+
                 } else {
                     itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                     itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+                    toAdd = true;
                 }
+
+                if (Tag.ITEMS_DYEABLE.isTagged(selectedItem.getType())) {
+                    LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemMeta;
+                    if (toAdd) {
+                        leatherArmorMeta.addItemFlags(ItemFlag.HIDE_DYE);
+                    } else {
+                        leatherArmorMeta.removeItemFlags(ItemFlag.HIDE_DYE);
+                    }
+                    selectedItem.setItemMeta(leatherArmorMeta);
+                    open(player);
+                    return;
+                }
+
                 selectedItem.setItemMeta(itemMeta);
                 open(player);
             }

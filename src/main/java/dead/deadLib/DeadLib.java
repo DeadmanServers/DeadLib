@@ -2,6 +2,7 @@ package dead.deadLib;
 
 import dead.deadLib.api.chat.ChatInputListener;
 import dead.deadLib.api.menu.AbsMenu;
+import dead.deadLib.api.menu.MenuManager;
 import dead.deadLib.api.nbt.NBT;
 import dead.deadLib.internal.itemeditor.ItemEditorCommand;
 import dead.deadLib.internal.itemstorage.ItemStorageCommand;
@@ -12,6 +13,7 @@ import dead.deadLib.internal.serverstatus.ServerStatusData;
 import dead.deadLib.api.menu.MenuClickListener;
 import dead.deadLib.internal.serverstatus.PlaceholderManager;
 import dead.deadLib.internal.serverstatus.SLPUtil;
+import dead.deadLib.api.menu.MenuListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
@@ -64,6 +66,8 @@ public final class DeadLib extends JavaPlugin {
         getCommand("deadlib").setExecutor(new DeadLibCommand());
         getCommand("itemeditor").setExecutor(new ItemEditorCommand());
         getCommand("itemstorage").setExecutor(new ItemStorageCommand());
+
+        new MenuManager(this);
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new MenuClickListener(), this);
