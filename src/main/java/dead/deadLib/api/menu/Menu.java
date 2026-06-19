@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -26,6 +27,9 @@ public abstract class Menu implements InventoryHolder {
     protected void set(int slot, Button button) {
         buttons.put(slot, button);
         inventory.setItem(slot, button.icon());
+    }
+    protected void fill(ItemStack filler) {
+        for (int i = 0; i < inventory.getSize(); i++) inventory.setItem(i, filler);
     }
 
     public void open(Player player) {
@@ -54,7 +58,6 @@ public abstract class Menu implements InventoryHolder {
 
         event.setCancelled(true);
     }
-
 
     @Override
     public @NotNull Inventory getInventory() {
