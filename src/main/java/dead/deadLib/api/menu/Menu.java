@@ -59,7 +59,6 @@ public abstract class Menu implements InventoryHolder {
         event.setCancelled(true);
     }
 
-
     @Override
     public @NotNull Inventory getInventory() {
         return inventory;

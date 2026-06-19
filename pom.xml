@@ -6,7 +6,7 @@
 
     <groupId>dead</groupId>
     <artifactId>DeadLib</artifactId>
-    <version>0.1.13</version>
+    <version>0.1.14</version>
     <packaging>jar</packaging>
 
     <name>DeadLib</name>
