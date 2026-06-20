@@ -32,10 +32,10 @@ public final class MenuIcons {
         glass.setItemMeta(glassMeta);
         return glass;
     }
-    public ItemStack saveButton() {
+    public static ItemStack saveButton() {
         return ItemBuilder.create(Material.EMERALD, "<green>Save").build();
     }
-    public ItemStack empty() {
+    public static ItemStack empty() {
         return ItemBuilder.create(Material.STONE_BUTTON, "<gray>EMPTY").build();
     }
 }

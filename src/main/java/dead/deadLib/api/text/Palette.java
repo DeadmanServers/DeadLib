@@ -9,11 +9,12 @@ public class Palette {
     public static final String TEXT_PRIMARY = "<#ffffff>";
     public static final String TEXT_SECONDARY = "<#aaaaaa>";
     public static final String TEXT_MUTED = "<#666666>";
+    public static final String HIGHLIGHT = "<#41a6ff>";
 
     // Feedback
     public static final String SUCCESS = "<#55ff55>";
     public static final String ERROR = "<#ff5555>";
-    public static final String WARNING = "<#ffaa00>";
+    public static final String WARNING = "<#ffc041>";
 
     // Separators
     public static final String SEPARATOR = "<#444444>";
